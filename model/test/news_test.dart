@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:currentsapi_domain/api/news_response.dart';
-import 'package:currentsapi_domain/api/status.dart';
+import 'package:currentsapi_model/api/news_response.dart';
+import 'package:currentsapi_model/api/status.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // `flutter test`

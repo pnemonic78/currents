@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+
+import 'my_route.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -11,12 +14,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  void _showProfile() {
+    Navigator.pushNamed(context, MyAppRoute.Profile);
+  }
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+  void _signIn() {
+    Navigator.pushNamed(context, MyAppRoute.SignIn);
   }
 
   @override
@@ -38,20 +41,17 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
+            (FirebaseAuth.instance.currentUser == null)
+                ? OutlinedButton(
+                    onPressed: _signIn,
+                    child: const Text('Sign In'),
+                  )
+                : OutlinedButton(
+                    onPressed: _showProfile,
+                    child: const Text('My Profile'),
+                  ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }
