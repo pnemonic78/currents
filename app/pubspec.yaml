@@ -41,6 +41,13 @@ dependencies:
   firebase_ui_auth: ^1.6.2
   firebase_ui_oauth_google: ^1.2.7
 
+  currentsapi_core:
+    path: ../core
+  currentsapi_domain:
+    path: ../domain
+  currentsapi_model:
+    path: ../model
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
