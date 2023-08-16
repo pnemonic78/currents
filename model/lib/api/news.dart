@@ -37,4 +37,10 @@ class News {
 
   static News? fromJson(Map<String, dynamic>? json) =>
       (json == null) ? null : _$NewsFromJson(json);
+
+  static const ImageNone = "None";
+
+  bool get isValidImage {
+    return (image != null) && image!.isNotEmpty && (image != ImageNone);
+  }
 }

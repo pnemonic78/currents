@@ -14,7 +14,7 @@ class FirebaseHelper {
     );
     FirebaseUIAuth.configureProviders(providers);
     if (kDebugMode) {
-      print('±!@ FirebaseAuth user=${FirebaseAuth.instance.currentUser}');
+      print('FirebaseAuth user=${FirebaseAuth.instance.currentUser}');
     }
   }
 
