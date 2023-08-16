@@ -1,4 +1,5 @@
 import 'package:currentsapi_app/news/latest_news.dart';
+import 'package:currentsapi_app/news/news_article.dart';
 import 'package:currentsapi_core/auth/firebase.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +34,8 @@ class MyApp extends StatelessWidget {
             ),
         MyAppRoute.LatestNews: (context) =>
             const LatestNewsScreen(title: 'Latest News'),
+        MyAppRoute.NewsArticle: (context) =>
+            const NewsArticleScreen(),
         MyAppRoute.Profile: (context) => ProfileScreen(
               providers: FirebaseHelper.providers,
               actions: [

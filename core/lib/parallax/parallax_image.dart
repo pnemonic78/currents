@@ -15,15 +15,19 @@ class ParallaxImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scrollable = Scrollable.maybeOf(context);
+
     return SizedBox(
       height: extent,
-      child: Flow(
-        delegate: ParallaxFlowDelegate(
-          scrollable: Scrollable.of(context),
-          listItemContext: context,
-        ),
-        children: [child],
-      ),
+      child: (scrollable != null)
+          ? Flow(
+              delegate: ParallaxFlowDelegate(
+                scrollable: scrollable,
+                listItemContext: context,
+              ),
+              children: [child],
+            )
+          : child,
     );
   }
 }

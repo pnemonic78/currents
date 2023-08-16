@@ -3,4 +3,5 @@ class MyAppRoute {
   static const SignIn = '/sign_in';
   static const Profile = '/profile';
   static const LatestNews = '/latest_news';
+  static const NewsArticle = '/news_article';
 }

@@ -11,8 +11,13 @@ const _cardRadius = Radius.circular(4.0);
 
 class NewsItem extends StatelessWidget {
   final News news;
+  final ValueChanged<News>? onTap;
 
-  const NewsItem({super.key, required this.news});
+  const NewsItem({
+    super.key,
+    required this.news,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -34,55 +39,58 @@ class NewsItem extends StatelessWidget {
 
     return Card(
       clipBehavior: Clip.antiAliasWithSaveLayer,
-      child: Stack(
-        alignment: AlignmentDirectional.bottomCenter,
-        children: [
-          ParallaxImage(
-            extent: imageExtent,
-            child: news.isValidImage
-                ? CachedNetworkImage(
-                    key: Key(news.id),
-                    imageUrl: news.image!,
-                    placeholder: (context, url) => icon,
-                    width: imageWidth,
-                    height: imageHeight,
-                    fit: BoxFit.cover,
-                  )
-                : icon,
-          ),
-          Container(
-            width: imageWidth,
-            height: imageExtent,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Colors.transparent, Colors.transparent, textBG],
+      child: InkWell(
+        onTap: () => onTap?.call(news),
+        child: Stack(
+          alignment: AlignmentDirectional.bottomCenter,
+          children: [
+            ParallaxImage(
+              extent: imageExtent,
+              child: news.isValidImage
+                  ? CachedNetworkImage(
+                      key: Key(news.id),
+                      imageUrl: news.image!,
+                      placeholder: (context, url) => icon,
+                      width: imageWidth,
+                      height: imageHeight,
+                      fit: BoxFit.cover,
+                    )
+                  : icon,
+            ),
+            Container(
+              width: imageWidth,
+              height: imageExtent,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Colors.transparent, textBG],
+                ),
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: _cardRadius,
+                  bottomRight: _cardRadius,
+                ),
               ),
-              borderRadius: const BorderRadius.only(
-                bottomLeft: _cardRadius,
-                bottomRight: _cardRadius,
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    news.title,
+                    style: textTheme.headlineMedium!
+                        .copyWith(color: colorScheme.onPrimary),
+                  ),
+                  Text(
+                    timeago.format(news.published, clock: DateTime.now()),
+                    style: textTheme.bodySmall!
+                        .copyWith(color: colorScheme.onPrimary),
+                  ),
+                ],
               ),
             ),
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  news.title,
-                  style: textTheme.headlineMedium!
-                      .copyWith(color: colorScheme.onPrimary),
-                ),
-                Text(
-                  timeago.format(news.published, clock: DateTime.now()),
-                  style: textTheme.bodySmall!
-                      .copyWith(color: colorScheme.onPrimary),
-                ),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -1,7 +1,10 @@
 import 'dart:convert';
 
-import 'package:currentsapi_app/news/news_item.dart';
+import 'package:currentsapi_app/news/news_arguments.dart';
+import 'package:currentsapi_app/news/news_list.dart';
+import 'package:currentsapi_model/api/news.dart';
 import 'package:currentsapi_model/api/news_response.dart';
+import 'package:currentsapi_model/api/status.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -18,17 +21,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  NewsResponse? _newsResponse;
-  late ScrollController _scrollController;
-
-  void _signIn() {
-    Navigator.pushNamed(context, MyAppRoute.SignIn);
-  }
+  List<News> _news = [];
 
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController();
 
     _parseNews();
 
@@ -41,24 +38,12 @@ class _MyHomePageState extends State<MyHomePage> {
     final data = await DefaultAssetBundle.of(context)
         .loadString('assets/latest-news.json');
     final json = jsonDecode(data);
-    final response = NewsResponse.fromJson(json)!;
-    setState(() {
-      _newsResponse = response;
-    });
-  }
-
-  Widget _newsList() {
-    final response = _newsResponse;
-    if (response == null) return Container();
-    final news = response.news + response.news;
-
-    return ListView.builder(
-      controller: _scrollController,
-      itemBuilder: (BuildContext context, int index) => NewsItem(
-        news: news[index],
-      ),
-      itemCount: news.length,
-    );
+    final response = NewsResponse.fromJson(json);
+    if (response?.status == Status.ok) {
+      setState(() {
+        _news = response!.news;
+      });
+    }
   }
 
   Widget _signInScreen() {
@@ -70,6 +55,15 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  void _signIn() {
+    Navigator.pushNamed(context, MyAppRoute.SignIn);
+  }
+
+  void _showNews(News news) {
+    Navigator.pushNamed(context, MyAppRoute.NewsArticle,
+        arguments: NewsArguments(news));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,7 +73,10 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: (FirebaseAuth.instance.currentUser == null)
           ? _signInScreen()
-          : _newsList(),
+          : NewsList(
+              news: _news,
+              onTap: _showNews,
+            ),
     );
   }
 }
