@@ -17,6 +17,6 @@ class NewsResponse {
     this.news = const [],
   });
 
-  static NewsResponse? fromJson(Map<String, dynamic>? json) =>
-      (json == null) ? null : _$NewsResponseFromJson(json);
+  static NewsResponse fromJson(Map<String, dynamic> json) =>
+      _$NewsResponseFromJson(json);
 }

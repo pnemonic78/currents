@@ -7,10 +7,10 @@ import 'package:flutter_test/flutter_test.dart';
 
 // `flutter test`
 void main() {
-  test('Latest news', () {
+  test('Example news', () {
     final file = File('test/latest-news.json').readAsStringSync();
     final json = jsonDecode(file);
-    final response = NewsResponse.fromJson(json)!;
+    final response = NewsResponse.fromJson(json);
 
     expect(response.status, Status.ok);
 

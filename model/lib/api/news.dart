@@ -35,8 +35,7 @@ class News {
     required this.published,
   });
 
-  static News? fromJson(Map<String, dynamic>? json) =>
-      (json == null) ? null : _$NewsFromJson(json);
+  static News? fromJson(Map<String, dynamic> json) => _$NewsFromJson(json);
 
   static const ImageNone = "None";
 
