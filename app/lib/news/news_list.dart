@@ -9,8 +9,8 @@ class NewsList extends StatefulWidget {
     this.onTap,
   });
 
-  final List<News> news;
-  final ValueChanged<News>? onTap;
+  final List<Article> news;
+  final ValueChanged<Article>? onTap;
 
   @override
   State<NewsList> createState() => _NewsListState();
@@ -27,7 +27,7 @@ class _NewsListState extends State<NewsList> {
     _scrollController = ScrollController();
   }
 
-  void _onTap(News news) {
+  void _onTap(Article news) {
     widget.onTap?.call(news);
   }
 
@@ -44,7 +44,7 @@ class _NewsListState extends State<NewsList> {
     return ListView.builder(
       controller: _scrollController,
       itemBuilder: (BuildContext context, int index) => NewsItem(
-        news: news[index],
+        article: news[index],
         onTap: _onTap,
       ),
       itemCount: news.length,

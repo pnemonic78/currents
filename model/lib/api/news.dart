@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'news.g.dart';
 
 @JsonSerializable(explicitToJson: true, createToJson: false)
-class News {
+class Article {
   @JsonKey(name: "id")
   final String id;
   @JsonKey(name: "title")
@@ -23,7 +23,7 @@ class News {
   @JsonKey(name: "published")
   final DateTime published;
 
-  News({
+  Article({
     required this.id,
     required this.title,
     required this.description,
@@ -35,7 +35,8 @@ class News {
     required this.published,
   });
 
-  static News? fromJson(Map<String, dynamic> json) => _$NewsFromJson(json);
+  static Article? fromJson(Map<String, dynamic> json) =>
+      _$ArticleFromJson(json);
 
   static const ImageNone = "None";
 

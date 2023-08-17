@@ -21,7 +21,7 @@ class _NewsArticleScreenState extends State<NewsArticleScreen> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(news.title),
       ),
-      body: NewsItem(news: news),
+      body: NewsItem(article: news),
     );
   }
 }

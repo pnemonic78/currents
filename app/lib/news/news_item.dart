@@ -10,12 +10,12 @@ import 'package:timeago/timeago.dart' as timeago;
 const _cardRadius = Radius.circular(4.0);
 
 class NewsItem extends StatelessWidget {
-  final News news;
-  final ValueChanged<News>? onTap;
+  final Article article;
+  final ValueChanged<Article>? onTap;
 
   const NewsItem({
     super.key,
-    required this.news,
+    required this.article,
     this.onTap,
   });
 
@@ -40,16 +40,16 @@ class NewsItem extends StatelessWidget {
     return Card(
       clipBehavior: Clip.antiAliasWithSaveLayer,
       child: InkWell(
-        onTap: () => onTap?.call(news),
+        onTap: () => onTap?.call(article),
         child: Stack(
           alignment: AlignmentDirectional.bottomCenter,
           children: [
             ParallaxImage(
               extent: imageExtent,
-              child: news.isValidImage
+              child: article.isValidImage
                   ? CachedNetworkImage(
-                      key: Key(news.id),
-                      imageUrl: news.image!,
+                      key: Key(article.id),
+                      imageUrl: article.image!,
                       placeholder: (context, url) => icon,
                       width: imageWidth,
                       height: imageHeight,
@@ -77,12 +77,12 @@ class NewsItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    news.title,
+                    article.title,
                     style: textTheme.headlineMedium!
                         .copyWith(color: colorScheme.onPrimary),
                   ),
                   Text(
-                    timeago.format(news.published, clock: DateTime.now()),
+                    timeago.format(article.published, clock: DateTime.now()),
                     style: textTheme.bodySmall!
                         .copyWith(color: colorScheme.onPrimary),
                   ),

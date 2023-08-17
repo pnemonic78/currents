@@ -21,7 +21,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<News> _news = [];
+  List<Article> _news = [];
 
   @override
   void initState() {
@@ -59,7 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.pushNamed(context, MyAppRoute.SignIn);
   }
 
-  void _showNews(News news) {
+  void _showNews(Article news) {
     Navigator.pushNamed(context, MyAppRoute.NewsArticle,
         arguments: NewsArguments(news));
   }

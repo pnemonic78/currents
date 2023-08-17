@@ -1,7 +1,7 @@
 import 'package:currentsapi_model/api/news.dart';
 
 class NewsArguments {
-  final News news;
+  final Article news;
 
   NewsArguments(this.news);
 }

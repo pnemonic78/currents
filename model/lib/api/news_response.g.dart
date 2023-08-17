@@ -12,7 +12,7 @@ NewsResponse _$NewsResponseFromJson(Map<String, dynamic> json) => NewsResponse(
           ? const []
           : (json['news'] as List<dynamic>)
               .nonNulls
-              .map((e) => News.fromJson(e as Map<String, dynamic>)!)
+              .map((e) => Article.fromJson(e as Map<String, dynamic>)!)
               .toList(),
     );
 

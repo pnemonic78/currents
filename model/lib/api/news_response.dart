@@ -10,7 +10,7 @@ class NewsResponse {
   @JsonKey(name: "status")
   final Status status;
   @JsonKey(name: "news")
-  final List<News> news;
+  final List<Article> news;
 
   NewsResponse({
     this.status = Status.ok,
