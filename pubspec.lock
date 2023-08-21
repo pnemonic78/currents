@@ -173,6 +173,13 @@ packages:
       relative: true
     source: path
     version: "1.0.0+1"
+  currentsapi_news:
+    dependency: transitive
+    description:
+      path: news
+      relative: true
+    source: path
+    version: "1.0.0+1"
   desktop_webview_auth:
     dependency: transitive
     description:

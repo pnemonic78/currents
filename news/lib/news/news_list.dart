@@ -1,6 +1,7 @@
-import 'package:currentsapi_app/news/news_item.dart';
 import 'package:currentsapi_model/api/news.dart';
 import 'package:flutter/material.dart';
+
+import 'news_item.dart';
 
 class NewsList extends StatefulWidget {
   const NewsList({

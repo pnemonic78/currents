@@ -1,5 +1,5 @@
-name: currentsapi_app
-description: Flutter application for Currents API.
+name: currentsapi_news
+description: Currents API - Core module.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -37,20 +37,8 @@ dependencies:
 
   currentsapi_core:
     path: ../core
-  currentsapi_domain:
-    path: ../domain
   currentsapi_model:
     path: ../model
-  currentsapi_news:
-    path: ../news
-
-  flutter_native_splash: ^2.3.1
-
-  # Firebase
-  firebase_core: ^2.15.0
-  firebase_auth: ^4.7.2
-  firebase_ui_auth: ^1.6.2
-  firebase_ui_oauth_google: ^1.2.7
 
   timeago: ^3.5.0
   cached_network_image: ^3.2.3
@@ -81,8 +69,6 @@ flutter:
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
-  assets:
-    - assets/latest-news.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -109,11 +95,3 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
-
-# To generate the splash screen:
-# 1. flutter clean
-# 2. flutter pub get
-# 3. dart run flutter_native_splash:create
-flutter_native_splash:
-  color: "#FFF3E0"
-  image: assets/tikal_flower.png

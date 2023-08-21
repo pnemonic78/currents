@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-import 'package:currentsapi_app/news/news_arguments.dart';
-import 'package:currentsapi_app/news/news_list.dart';
 import 'package:currentsapi_model/api/news.dart';
 import 'package:currentsapi_model/api/news_response.dart';
 import 'package:currentsapi_model/api/status.dart';
+import 'package:currentsapi_news/news/news_arguments.dart';
+import 'package:currentsapi_news/news/news_list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -39,9 +39,9 @@ class _MyHomePageState extends State<MyHomePage> {
         .loadString('assets/latest-news.json');
     final json = jsonDecode(data);
     final response = NewsResponse.fromJson(json);
-    if (response?.status == Status.ok) {
+    if (response.status == Status.ok) {
       setState(() {
-        _news = response!.news;
+        _news = response.news;
       });
     }
   }

@@ -1,7 +1,7 @@
-import 'package:currentsapi_app/news/news_item.dart';
 import 'package:flutter/material.dart';
 
 import 'news_arguments.dart';
+import 'news_item.dart';
 
 class NewsArticleScreen extends StatefulWidget {
   const NewsArticleScreen({super.key});
