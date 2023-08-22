@@ -78,8 +78,11 @@ class NewsItem extends StatelessWidget {
                 children: [
                   Text(
                     article.title,
-                    style: textTheme.headlineMedium!
-                        .copyWith(color: colorScheme.onPrimary),
+                    style: textTheme.headlineSmall!.copyWith(
+                      color: colorScheme.onPrimary,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    maxLines: 4,
                   ),
                   Text(
                     timeago.format(article.published, clock: DateTime.now()),

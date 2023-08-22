@@ -16,7 +16,7 @@ void main() {
       apiKey: Keys.CURRENTS_API,
       language: language,
     );
-    print('±!@ response=[$response]');
+    print('response=[$response]');
 
     expect(response.status, Status.ok);
 

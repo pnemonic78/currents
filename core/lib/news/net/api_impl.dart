@@ -1,7 +1,6 @@
 import 'package:currentsapi_core/auth/keys.dart';
 import 'package:currentsapi_core/news/net/rest_client.dart';
 import 'package:currentsapi_model/api/news_response.dart';
-import 'package:flutter/widgets.dart';
 
 import 'api.dart';
 
@@ -14,11 +13,10 @@ class CurrentsApiImpl extends CurrentsApi {
   CurrentsApiImpl(this._client);
 
   @override
-  Future<NewsResponse> latest(BuildContext context) async {
-    final Locale locale = Localizations.localeOf(context);
+  Future<NewsResponse> latest(String languageCode) async {
     return _client.getLatest(
       apiKey: _apiKey,
-      language: locale.languageCode,
+      language: languageCode,
     );
   }
 }

@@ -1,5 +1,7 @@
 import 'package:currentsapi_core/auth/firebase.dart';
+import 'package:currentsapi_model/api/news.dart';
 import 'package:currentsapi_news/news/latest_news.dart';
+import 'package:currentsapi_news/news/news_arguments.dart';
 import 'package:currentsapi_news/news/news_article.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
@@ -27,25 +29,36 @@ class MyApp extends StatelessWidget {
               providers: FirebaseHelper.providers,
               actions: [
                 AuthStateChangeAction<SignedIn>((context, state) {
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, MyAppRoute.Home, (route) => false);
+                  _goHome(context);
                 }),
               ],
             ),
-        MyAppRoute.LatestNews: (context) =>
-            const LatestNewsScreen(title: 'Latest News'),
-        MyAppRoute.NewsArticle: (context) =>
-            const NewsArticleScreen(),
+        MyAppRoute.LatestNews: (context) => LatestNewsScreen(
+              onTap: (article) => _showNews(context, article),
+            ),
+        MyAppRoute.NewsArticle: (context) => const NewsArticleScreen(),
         MyAppRoute.Profile: (context) => ProfileScreen(
               providers: FirebaseHelper.providers,
               actions: [
                 SignedOutAction((context) {
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, MyAppRoute.Home, (route) => false);
+                  _goHome(context);
                 }),
               ],
             ),
       },
+    );
+  }
+
+  void _goHome(BuildContext context) {
+    Navigator.pushNamedAndRemoveUntil(
+        context, MyAppRoute.Home, (route) => false);
+  }
+
+  void _showNews(BuildContext context, Article article) {
+    Navigator.pushNamed(
+      context,
+      MyAppRoute.NewsArticle,
+      arguments: NewsArguments(article),
     );
   }
 }

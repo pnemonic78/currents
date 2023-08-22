@@ -7,13 +7,11 @@ part of 'news_response.dart';
 // **************************************************************************
 
 NewsResponse _$NewsResponseFromJson(Map<String, dynamic> json) => NewsResponse(
-      status: $enumDecodeNullable(_$StatusEnumMap, json['status']) ?? Status.error,
-      news: (json['news'] == null)
-          ? const []
-          : (json['news'] as List<dynamic>)
-              .nonNulls
-              .map((e) => Article.fromJson(e as Map<String, dynamic>)!)
-              .toList(),
+      status: $enumDecodeNullable(_$StatusEnumMap, json['status']) ?? Status.ok,
+      news: (json['news'] as List<dynamic>?)
+              ?.map((e) => Article.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
     );
 
 const _$StatusEnumMap = {

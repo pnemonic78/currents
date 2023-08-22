@@ -1,5 +1,5 @@
 name: currentsapi_news
-description: Currents API - Core module.
+description: Currents API - News module.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev

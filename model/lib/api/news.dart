@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'news.g.dart';
 
-@JsonSerializable(explicitToJson: true, createToJson: false)
+@JsonSerializable(explicitToJson: true)
 class Article {
   @JsonKey(name: "id")
   final String id;
@@ -35,12 +35,19 @@ class Article {
     required this.published,
   });
 
-  static Article? fromJson(Map<String, dynamic> json) =>
-      _$ArticleFromJson(json);
-
   static const ImageNone = "None";
 
   bool get isValidImage {
     return (image != null) && image!.isNotEmpty && (image != ImageNone);
+  }
+
+  static Article fromJson(Map<String, dynamic> json) =>
+      _$ArticleFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ArticleToJson(this);
+
+  @override
+  String toString() {
+    return toJson().toString();
   }
 }

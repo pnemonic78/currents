@@ -1,10 +1,6 @@
-import 'dart:convert';
-
 import 'package:currentsapi_model/api/news.dart';
-import 'package:currentsapi_model/api/news_response.dart';
-import 'package:currentsapi_model/api/status.dart';
+import 'package:currentsapi_news/news/latest_news.dart';
 import 'package:currentsapi_news/news/news_arguments.dart';
-import 'package:currentsapi_news/news/news_list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -21,29 +17,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<Article> _news = [];
-
   @override
   void initState() {
     super.initState();
 
-    _parseNews();
-
     // This is where you can initialize the resources needed by your app while
     // the splash screen is displayed.
     FlutterNativeSplash.remove();
-  }
-
-  void _parseNews() async {
-    final data = await DefaultAssetBundle.of(context)
-        .loadString('assets/latest-news.json');
-    final json = jsonDecode(data);
-    final response = NewsResponse.fromJson(json);
-    if (response.status == Status.ok) {
-      setState(() {
-        _news = response.news;
-      });
-    }
   }
 
   Widget _signInScreen() {
@@ -60,8 +40,11 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _showNews(Article news) {
-    Navigator.pushNamed(context, MyAppRoute.NewsArticle,
-        arguments: NewsArguments(news));
+    Navigator.pushNamed(
+      context,
+      MyAppRoute.NewsArticle,
+      arguments: NewsArguments(news),
+    );
   }
 
   @override
@@ -73,10 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: (FirebaseAuth.instance.currentUser == null)
           ? _signInScreen()
-          : NewsList(
-              news: _news,
-              onTap: _showNews,
-            ),
+          : LatestNewsScreen(onTap: _showNews),
     );
   }
 }

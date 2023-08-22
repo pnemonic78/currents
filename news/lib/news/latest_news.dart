@@ -1,48 +1,50 @@
+import 'package:currentsapi_core/data/repo_simple.dart';
+import 'package:currentsapi_model/api/news.dart';
+import 'package:currentsapi_model/prefs/user_prefs.dart';
 import 'package:flutter/material.dart';
 
-class LatestNewsScreen extends StatefulWidget {
-  const LatestNewsScreen({super.key, required this.title});
+import 'news_list.dart';
 
-  final String title;
+class LatestNewsScreen extends StatefulWidget {
+  const LatestNewsScreen({super.key, this.onTap});
+
+  final ValueChanged<Article>? onTap;
 
   @override
   State<LatestNewsScreen> createState() => _LatestNewsScreenState();
 }
 
 class _LatestNewsScreenState extends State<LatestNewsScreen> {
-  int _counter = 0;
+  List<Article> _news = [];
+  final _repo = CurrentsRepositorySimple();
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+  @override
+  void initState() {
+    super.initState();
+
+    _repo.getUserPreferences().then((prefs) => _fetchNews(prefs));
+  }
+
+  void _fetchNews(UserPreferences prefs) async {
+    _repo.getLatestNewsForUser(prefs).then((value) =>
+        setState(() {
+          _news = value.news;
+        }));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        backgroundColor: Theme
+            .of(context)
+            .colorScheme
+            .inversePrimary,
+        title: const Text("Latest News"),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+      body: NewsList(
+        news: _news,
+        onTap: widget.onTap,
       ),
     );
   }
