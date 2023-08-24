@@ -7,9 +7,9 @@ abstract class CurrentsRepository {
 
   Future<void> setUserPreferences(UserPreferences userPreferences);
 
-  Future<NewsCollection> getLatestNews(String languageCode);
+  Stream<NewsCollection> getLatestNews(String languageCode);
 
-  Future<NewsCollection> getLatestNewsForUser(UserPreferences userPreferences) {
+  Stream<NewsCollection> getLatestNewsForUser(UserPreferences userPreferences) {
     return getLatestNews(userPreferences.language);
   }
 

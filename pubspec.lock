@@ -180,6 +180,13 @@ packages:
       relative: true
     source: path
     version: "1.0.0+1"
+  currentsapi_settings:
+    dependency: transitive
+    description:
+      path: settings
+      relative: true
+    source: path
+    version: "1.0.0+1"
   desktop_webview_auth:
     dependency: transitive
     description:

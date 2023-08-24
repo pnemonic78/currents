@@ -32,7 +32,7 @@ class CurrentsRepositorySimple extends CurrentsRepository {
   }
 
   @override
-  Future<NewsCollection> getLatestNews(String languageCode) {
+  Stream<NewsCollection> getLatestNews(String languageCode) {
     return _repo.getLatestNews(languageCode);
   }
 

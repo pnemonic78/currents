@@ -51,17 +51,23 @@ class CurrentsRepositoryLocal extends CurrentsRepository {
   }
 
   @override
-  Future<NewsCollection> getLatestNews(String languageCode) async {
+  Stream<NewsCollection> getLatestNews(String languageCode) async* {
     final newsDoc = _latestNewsRef.doc(languageCode);
     final newsSnapshot = await newsDoc.get();
+    NewsCollection result;
     if (newsSnapshot.exists) {
-      final newsData = newsSnapshot.data();
-      if (newsData != null) return newsData;
+      final data = newsSnapshot.data();
+      result = data ?? NewsCollection.empty();
+    } else {
+      final news = await NewsCollection.parseLatestNews();
+      result = NewsCollection(news: news);
     }
+    yield result;
 
-    final news = await NewsCollection.parseLatestNews();
-    return NewsCollection(news: news)
-      ..timestamp = DateTime.now().subtract(const Duration(hours: 1));
+    yield* newsDoc
+        .snapshots()
+        .where((snapshot) => snapshot.exists)
+        .map((snapshot) => snapshot.data() ?? result);
   }
 
   @override

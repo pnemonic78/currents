@@ -1,4 +1,5 @@
 import 'package:currentsapi_core/news/net/api.dart';
+import 'package:currentsapi_model/api/news.dart';
 import 'package:currentsapi_model/api/status.dart';
 import 'package:currentsapi_model/db/news_db.dart';
 import 'package:currentsapi_model/prefs/user_prefs.dart';
@@ -22,12 +23,11 @@ class CurrentsRepositoryRemote extends CurrentsRepository {
   }
 
   @override
-  Future<NewsCollection> getLatestNews(String languageCode) async {
+  Stream<NewsCollection> getLatestNews(String languageCode) async* {
     final response = await _api.latest(languageCode);
-    if (response.status == Status.ok) {
-      return NewsCollection(news: response.news);
-    }
-    return NewsCollection(news: const []);
+    final List<Article> news =
+        (response.status == Status.ok) ? response.news : const [];
+    yield NewsCollection(news: news);
   }
 
   @override

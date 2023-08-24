@@ -56,7 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: (FirebaseAuth.instance.currentUser == null)
           ? _signInScreen()
-          : LatestNewsScreen(onTap: _showNews),
+          : LatestNews(onTap: _showNews),
     );
   }
 }

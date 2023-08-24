@@ -27,6 +27,8 @@ class NewsCollection {
     return news.toString();
   }
 
+  static NewsCollection empty() => NewsCollection(news: []);
+
   static Future<List<Article>> parseLatestNews() async {
     final data = await rootBundle
         .loadString('packages/currentsapi_model/assets/latest-news.json');

@@ -22,16 +22,20 @@ class CurrentRepositoryImpl extends CurrentsRepository {
   }
 
   @override
-  Future<NewsCollection> getLatestNews(String languageCode) async {
+  Stream<NewsCollection> getLatestNews(String languageCode) async* {
     // if news is older than X minutes, then fetch from remote server.
-    final localNews = await _local.getLatestNews(languageCode);
-    final diff = DateTime.now().difference(localNews.timestamp);
+    final localNews = _local.getLatestNews(languageCode).asBroadcastStream();
+    final localNewsSnapshot = await localNews.first;
+    yield localNewsSnapshot;
+
+    final diff = DateTime.now().difference(localNewsSnapshot.timestamp);
     if (diff.inMinutes >= _oldAgeMinutes) {
-      final remoteNews = await _remote.getLatestNews(languageCode);
+      final remoteNews = await _remote.getLatestNews(languageCode).first;
       _local.setLatestNews(remoteNews, languageCode);
-      return remoteNews;
+      yield remoteNews;
     }
-    return localNews;
+
+    yield* localNews;
   }
 
   @override

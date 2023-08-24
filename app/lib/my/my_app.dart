@@ -1,6 +1,6 @@
 import 'package:currentsapi_core/auth/firebase.dart';
 import 'package:currentsapi_model/api/news.dart';
-import 'package:currentsapi_news/news/latest_news.dart';
+import 'package:currentsapi_news/news/latest_news_screen.dart';
 import 'package:currentsapi_news/news/news_arguments.dart';
 import 'package:currentsapi_news/news/news_article.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
