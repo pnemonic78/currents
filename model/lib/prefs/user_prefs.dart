@@ -11,7 +11,10 @@ class UserPreferences {
   @JsonKey(name: "language")
   String language = getPlatformLanguage();
   @JsonKey(name: "theme")
-  Theme theme = Theme.system;
+  AppTheme theme = AppTheme.system;
+
+  String? displayName;
+  String? photoURL;
 
   static UserPreferences fromJson(Map<String, dynamic> json) =>
       _$UserPreferencesFromJson(json);

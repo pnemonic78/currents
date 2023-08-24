@@ -34,10 +34,16 @@ class CurrentsRepositoryLocal extends CurrentsRepository {
     final userSnapshot = await userDoc.get();
     if (userSnapshot.exists) {
       final userData = userSnapshot.data();
-      if (userData != null) return userData;
+      if (userData != null) {
+        userData.displayName = user.displayName;
+        userData.photoURL = user.photoURL;
+        return userData;
+      }
     }
 
-    UserPreferences userPrefs = UserPreferences();
+    UserPreferences userPrefs = UserPreferences()
+      ..displayName = user.displayName
+      ..photoURL = user.photoURL;
     await userDoc.set(userPrefs);
     return userPrefs;
   }

@@ -1,6 +1,7 @@
 import 'package:currentsapi_model/api/news.dart';
 import 'package:currentsapi_news/news/latest_news.dart';
 import 'package:currentsapi_news/news/news_arguments.dart';
+import 'package:currentsapi_settings/settings/settings_arguments.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -47,12 +48,26 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  void _showSettings() {
+    Navigator.pushNamed(
+      context,
+      MyAppRoute.Settings,
+      arguments: SettingsArguments(routeProfile: MyAppRoute.Profile),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: _showSettings,
+          )
+        ],
       ),
       body: (FirebaseAuth.instance.currentUser == null)
           ? _signInScreen()

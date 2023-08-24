@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-enum Theme {
+enum AppTheme {
   @JsonValue("system")
   system,
   @JsonValue("dark")

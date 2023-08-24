@@ -2,7 +2,9 @@ import 'package:currentsapi_core/auth/firebase.dart';
 import 'package:currentsapi_model/api/news.dart';
 import 'package:currentsapi_news/news/latest_news_screen.dart';
 import 'package:currentsapi_news/news/news_arguments.dart';
-import 'package:currentsapi_news/news/news_article.dart';
+import 'package:currentsapi_news/news/news_article_screen.dart';
+import 'package:currentsapi_settings/settings/settings_arguments.dart';
+import 'package:currentsapi_settings/settings/settings_screen.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -45,6 +47,7 @@ class MyApp extends StatelessWidget {
                 }),
               ],
             ),
+        MyAppRoute.Settings: (context) => const SettingsScreen(),
       },
     );
   }

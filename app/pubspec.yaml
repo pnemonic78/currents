@@ -43,6 +43,8 @@ dependencies:
     path: ../model
   currentsapi_news:
     path: ../news
+  currentsapi_settings:
+    path: ../settings
 
   flutter_native_splash: ^2.3.1
 

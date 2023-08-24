@@ -30,12 +30,19 @@ class _LatestNewsState extends State<LatestNews> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
+    final colorScheme = theme.colorScheme;
+
     return StreamBuilder<NewsCollection>(
       stream: _repo.getLatestNewsForUser(_userPreferences),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Center(
-            child: Text(snapshot.error.toString()),
+            child: Text(
+              snapshot.error.toString(),
+              style: textTheme.bodyLarge?.copyWith(color: colorScheme.error),
+            ),
           );
         }
         if (!snapshot.hasData) {
