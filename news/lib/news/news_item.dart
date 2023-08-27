@@ -13,6 +13,8 @@ class NewsItem extends StatelessWidget {
   final Article article;
   final ValueChanged<Article>? onTap;
 
+  static const imageAspectRatio = 1.5;
+
   const NewsItem({
     super.key,
     required this.article,
@@ -24,7 +26,7 @@ class NewsItem extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final width = size.width;
     final imageWidth = width;
-    final imageHeight = imageWidth / 1.5;
+    final imageHeight = imageWidth / imageAspectRatio;
     final imageExtent = imageHeight * 0.75;
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
