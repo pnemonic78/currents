@@ -23,7 +23,10 @@ class CurrentsRepositoryRemote extends CurrentsRepository {
   }
 
   @override
-  Stream<NewsCollection> getLatestNews(String languageCode) async* {
+  Stream<NewsCollection> getLatestNews(
+    String languageCode, {
+    bool refresh = true,
+  }) async* {
     final response = await _api.latest(languageCode);
     final List<Article> news =
         (response.status == Status.ok) ? response.news : const [];

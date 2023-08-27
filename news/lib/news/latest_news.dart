@@ -18,6 +18,7 @@ class LatestNews extends StatefulWidget {
 class _LatestNewsState extends State<LatestNews> {
   final _repo = CurrentsRepositorySimple();
   UserPreferences _userPreferences = UserPreferences();
+  bool _refreshed = true;
 
   @override
   void initState() {
@@ -34,26 +35,38 @@ class _LatestNewsState extends State<LatestNews> {
     final textTheme = theme.textTheme;
     final colorScheme = theme.colorScheme;
 
-    return StreamBuilder<NewsCollection>(
-      stream: _repo.getLatestNewsForUser(_userPreferences),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Center(
-            child: Text(
-              snapshot.error.toString(),
-              style: textTheme.bodyLarge?.copyWith(color: colorScheme.error),
-            ),
+    return RefreshIndicator(
+      onRefresh: _refresh,
+      child: StreamBuilder<NewsCollection>(
+        stream:
+            _repo.getLatestNewsForUser(_userPreferences, refresh: _refreshed),
+        builder: (context, snapshot) {
+          _refreshed = false;
+
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                snapshot.error.toString(),
+                style: textTheme.bodyLarge?.copyWith(color: colorScheme.error),
+              ),
+            );
+          }
+          if (!snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          final data = snapshot.requireData;
+          return NewsList(
+            news: data.news,
+            onTap: widget.onTap,
           );
-        }
-        if (!snapshot.hasData) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        final data = snapshot.requireData;
-        return NewsList(
-          news: data.news,
-          onTap: widget.onTap,
-        );
-      },
+        },
+      ),
     );
+  }
+
+  Future<void> _refresh() async {
+    setState(() {
+      _refreshed = true;
+    });
   }
 }

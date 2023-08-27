@@ -8,7 +8,6 @@ import 'package:currentsapi_core/news/net/api_impl.dart';
 import 'package:currentsapi_core/news/net/rest_client.dart';
 import 'package:currentsapi_model/db/news_db.dart';
 import 'package:currentsapi_model/prefs/user_prefs.dart';
-
 import 'package:dio/dio.dart';
 
 // FIXME: this should be in dependency injection.
@@ -32,8 +31,11 @@ class CurrentsRepositorySimple extends CurrentsRepository {
   }
 
   @override
-  Stream<NewsCollection> getLatestNews(String languageCode) {
-    return _repo.getLatestNews(languageCode);
+  Stream<NewsCollection> getLatestNews(
+    String languageCode, {
+    bool refresh = false,
+  }) {
+    return _repo.getLatestNews(languageCode, refresh: refresh);
   }
 
   @override

@@ -57,7 +57,10 @@ class CurrentsRepositoryLocal extends CurrentsRepository {
   }
 
   @override
-  Stream<NewsCollection> getLatestNews(String languageCode) async* {
+  Stream<NewsCollection> getLatestNews(
+    String languageCode, {
+    bool refresh = false,
+  }) async* {
     final newsDoc = _latestNewsRef.doc(languageCode);
     final newsSnapshot = await newsDoc.get();
     NewsCollection result;
