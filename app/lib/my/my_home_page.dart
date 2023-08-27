@@ -56,6 +56,14 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  void _showSearch() {
+    Navigator.pushNamed(context, MyAppRoute.Search);
+  }
+
+  void _showFavorites() {
+    Navigator.pushNamed(context, MyAppRoute.Favorites);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,9 +72,17 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
         actions: [
           IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: _showSearch,
+          ),
+          IconButton(
+            icon: const Icon(Icons.favorite),
+            onPressed: _showFavorites,
+          ),
+          IconButton(
             icon: const Icon(Icons.settings),
             onPressed: _showSettings,
-          )
+          ),
         ],
       ),
       body: (FirebaseAuth.instance.currentUser == null)
