@@ -38,16 +38,22 @@ class _LatestNewsState extends State<LatestNews> {
     return RefreshIndicator(
       onRefresh: _refresh,
       child: StreamBuilder<NewsCollection>(
-        stream:
-            _repo.getLatestNewsForUser(_userPreferences, refresh: _refreshed),
+        stream: _repo.getLatestNewsForUser(
+          _userPreferences,
+          refresh: _refreshed,
+        ),
         builder: (context, snapshot) {
           _refreshed = false;
 
           if (snapshot.hasError) {
             return Center(
-              child: Text(
-                snapshot.error.toString(),
-                style: textTheme.bodyLarge?.copyWith(color: colorScheme.error),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  snapshot.error.toString(),
+                  style:
+                      textTheme.bodyLarge?.copyWith(color: colorScheme.error),
+                ),
               ),
             );
           }

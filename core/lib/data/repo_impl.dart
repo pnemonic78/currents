@@ -35,9 +35,14 @@ class CurrentRepositoryImpl extends CurrentsRepository {
     // if news is older than X minutes, then fetch from remote server.
     final diff = DateTime.now().difference(localNewsSnapshot.timestamp);
     if (refresh || (diff.inMinutes >= _oldAgeMinutes)) {
-      final remoteNews = await _remote.getLatestNews(languageCode).first;
-      _local.setLatestNews(remoteNews, languageCode);
-      yield remoteNews;
+      try {
+        final remoteNews = await _remote.getLatestNews(languageCode).first;
+        _local.setLatestNews(remoteNews, languageCode);
+        yield remoteNews;
+      } on Exception catch (e, s) {
+        print("getLatestNews Exception $e");
+        // use localNews
+      }
     }
 
     yield* localNews;

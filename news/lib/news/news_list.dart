@@ -37,8 +37,11 @@ class _NewsListState extends State<NewsList> {
     final news = widget.news;
 
     if (news.isEmpty) {
-      return const Center(
-        child: Text("No news"),
+      return const Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Center(
+          child: Text("No news"),
+        ),
       );
     }
 
