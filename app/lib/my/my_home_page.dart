@@ -1,7 +1,3 @@
-import 'package:currentsapi_model/api/news.dart';
-import 'package:currentsapi_news/news/latest_news.dart';
-import 'package:currentsapi_news/news/news_arguments.dart';
-import 'package:currentsapi_settings/settings/settings_arguments.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -27,67 +23,33 @@ class _MyHomePageState extends State<MyHomePage> {
     FlutterNativeSplash.remove();
   }
 
-  Widget _signInScreen() {
-    return Center(
-      child: OutlinedButton(
-        onPressed: _signIn,
-        child: const Text('Sign In'),
-      ),
-    );
-  }
-
-  void _signIn() {
-    Navigator.pushNamed(context, MyAppRoute.SignIn);
-  }
-
-  void _showNews(Article news) {
-    Navigator.pushNamed(
+  void _showNews(BuildContext context) async {
+    Navigator.pushNamedAndRemoveUntil(
       context,
-      MyAppRoute.NewsArticle,
-      arguments: NewsArguments(news),
+      MyAppRoute.LatestNews,
+      (route) => false,
     );
   }
 
-  void _showSettings() {
-    Navigator.pushNamed(
+  void _showSignIn(BuildContext context) async {
+    Navigator.pushNamedAndRemoveUntil(
       context,
-      MyAppRoute.Settings,
-      arguments: SettingsArguments(routeProfile: MyAppRoute.Profile),
+      MyAppRoute.SignIn,
+      (route) => false,
     );
   }
 
-  void _showSearch() {
-    Navigator.pushNamed(context, MyAppRoute.Search);
-  }
-
-  void _showFavorites() {
-    Navigator.pushNamed(context, MyAppRoute.Favorites);
+  void _showHome(BuildContext context) {
+    if (FirebaseAuth.instance.currentUser != null) {
+      _showNews(context);
+    } else {
+      _showSignIn(context);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: _showSearch,
-          ),
-          IconButton(
-            icon: const Icon(Icons.favorite),
-            onPressed: _showFavorites,
-          ),
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: _showSettings,
-          ),
-        ],
-      ),
-      body: (FirebaseAuth.instance.currentUser == null)
-          ? _signInScreen()
-          : LatestNews(onTap: _showNews),
-    );
+    Future.microtask(() => _showHome(context));
+    return Container(color: Theme.of(context).colorScheme.background);
   }
 }

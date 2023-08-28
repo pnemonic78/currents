@@ -1,10 +1,7 @@
+import 'package:currentsapi_app/news/latest_news_screen.dart';
+import 'package:currentsapi_app/news/news_article_screen.dart';
+import 'package:currentsapi_app/settings/settings_screen.dart';
 import 'package:currentsapi_core/auth/firebase.dart';
-import 'package:currentsapi_model/api/news.dart';
-import 'package:currentsapi_news/news/latest_news_screen.dart';
-import 'package:currentsapi_news/news/news_arguments.dart';
-import 'package:currentsapi_news/news/news_article_screen.dart';
-import 'package:currentsapi_settings/settings/settings_arguments.dart';
-import 'package:currentsapi_settings/settings/settings_screen.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -35,9 +32,7 @@ class MyApp extends StatelessWidget {
                 }),
               ],
             ),
-        MyAppRoute.LatestNews: (context) => LatestNewsScreen(
-              onTap: (article) => _showNews(context, article),
-            ),
+        MyAppRoute.LatestNews: (context) => const LatestNewsScreen(),
         MyAppRoute.NewsArticle: (context) => const NewsArticleScreen(),
         MyAppRoute.Profile: (context) => ProfileScreen(
               providers: FirebaseHelper.providers,
@@ -54,14 +49,9 @@ class MyApp extends StatelessWidget {
 
   void _goHome(BuildContext context) {
     Navigator.pushNamedAndRemoveUntil(
-        context, MyAppRoute.Home, (route) => false);
-  }
-
-  void _showNews(BuildContext context, Article article) {
-    Navigator.pushNamed(
       context,
-      MyAppRoute.NewsArticle,
-      arguments: NewsArguments(article),
+      MyAppRoute.Home,
+      (route) => false,
     );
   }
 }
