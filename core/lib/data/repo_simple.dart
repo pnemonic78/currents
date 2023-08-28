@@ -49,7 +49,7 @@ class CurrentsRepositorySimple extends CurrentsRepository {
   }
 
   @override
-  Future<void> setUserPreferences(UserPreferences userPreferences) {
+  Future<void> setUserPreferences(UserPreferences? userPreferences) {
     return _repo.setUserPreferences(userPreferences);
   }
 }

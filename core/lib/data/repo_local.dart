@@ -49,11 +49,15 @@ class CurrentsRepositoryLocal extends CurrentsRepository {
   }
 
   @override
-  Future<void> setUserPreferences(UserPreferences userPreferences) async {
+  Future<void> setUserPreferences(UserPreferences? userPreferences) async {
     final user = FirebaseAuth.instance.currentUser;
     final String userId = user!.uid;
     final userDoc = _usersRef.doc(userId);
-    userDoc.set(userPreferences);
+    if (userPreferences != null) {
+      userDoc.set(userPreferences);
+    } else {
+      userDoc.delete();
+    }
   }
 
   @override

@@ -17,7 +17,7 @@ class CurrentRepositoryImpl extends CurrentsRepository {
   }
 
   @override
-  Future<void> setUserPreferences(UserPreferences userPreferences) async {
+  Future<void> setUserPreferences(UserPreferences? userPreferences) async {
     return _local.setUserPreferences(userPreferences);
   }
 

@@ -5,7 +5,8 @@ import 'package:currentsapi_model/prefs/user_prefs.dart';
 abstract class CurrentsRepository {
   Future<UserPreferences> getUserPreferences();
 
-  Future<void> setUserPreferences(UserPreferences userPreferences);
+  /// @param userPreferences The user preferences. `null` value deletes the profile.
+  Future<void> setUserPreferences(UserPreferences? userPreferences);
 
   Stream<NewsCollection> getLatestNews(
     String languageCode, {

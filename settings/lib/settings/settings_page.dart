@@ -66,6 +66,11 @@ class _SettingsPageState extends State<SettingsPage> {
               value: _profileImage(context, prefs),
               onPressed: _showProfile,
             ),
+            SettingsTile.navigation(
+              leading: const Icon(Icons.delete),
+              title: const Text('Clear Data'),
+              onPressed: _clearProfile,
+            ),
           ],
         ),
         SettingsSection(
@@ -114,14 +119,18 @@ class _SettingsPageState extends State<SettingsPage> {
       builder: (context) => LanguagePickerDialog(
         title: const Text('Select Language'),
         isSearchable: true,
-        onValuePicked: (Language language) => setState(() {
-          final prefs = _userPreferences;
-          prefs.language = language.isoCode;
-          _repo.setUserPreferences(prefs);
-        }),
+        onValuePicked: (Language language) => _updateLanguage(language),
         itemBuilder: _buildLanguageItem,
       ),
     );
+  }
+
+  void _updateLanguage(Language language) {
+    setState(() {
+      final prefs = _userPreferences;
+      prefs.language = language.isoCode;
+      _repo.setUserPreferences(prefs);
+    });
   }
 
   void _pickTheme(BuildContext context) async {
@@ -166,25 +175,59 @@ class _SettingsPageState extends State<SettingsPage> {
   void _updateTheme(UserPreferences userPreferences, AppTheme theme) async {
     userPreferences.theme = theme;
     _repo.setUserPreferences(userPreferences);
+    //TODO refresh app
   }
 
   Widget _profileImage(BuildContext context, UserPreferences preferences) {
-    return (preferences.photoURL?.isNotEmpty ?? false)
-        ? CachedNetworkImage(
-            imageUrl: preferences.photoURL ?? "",
-            placeholder: (context, url) =>
-                const Icon(Icons.face, size: _photoSize),
-            width: _photoSize,
-            height: _photoSize,
-            fit: BoxFit.cover,
-          )
-        : const Icon(Icons.face, size: _photoSize);
+    return ClipOval(
+      child: (preferences.photoURL?.isNotEmpty ?? false)
+          ? CachedNetworkImage(
+              imageUrl: preferences.photoURL ?? "",
+              placeholder: (context, url) =>
+                  const Icon(Icons.face, size: _photoSize),
+              width: _photoSize,
+              height: _photoSize,
+              fit: BoxFit.cover,
+            )
+          : const Icon(Icons.face, size: _photoSize),
+    );
   }
 
   void _showProfile(BuildContext context) async {
     final args =
         ModalRoute.of(context)!.settings.arguments as SettingsArguments;
     Navigator.pushNamed(context, args.routeProfile);
+  }
+
+  void _clearProfile(BuildContext context) async {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Clear App Data'),
+        content:
+            const Text("Are you sure that you want to delete your app data?"),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text("Cancel"),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              _clearProfileYes();
+            },
+            child: const Text("OK"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _clearProfileYes() async {
+    //TODO delete the user's db
+    _repo.setUserPreferences(null);
   }
 
   void _showAbout(BuildContext context) async {
