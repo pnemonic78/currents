@@ -143,23 +143,47 @@ class _SettingsPageState extends State<SettingsPage> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            RadioListTile<AppTheme>(
-              title: Text(themeLabels[AppTheme.system]!),
-              value: AppTheme.system,
-              groupValue: prefs.theme,
-              onChanged: (AppTheme? value) => Navigator.pop(context, value),
+            Row(
+              children: [
+                const Icon(Icons.palette_outlined),
+                Expanded(
+                  child: RadioListTile<AppTheme>(
+                    title: Text(themeLabels[AppTheme.system]!),
+                    value: AppTheme.system,
+                    groupValue: prefs.theme,
+                    onChanged: (AppTheme? value) =>
+                        Navigator.pop(context, value),
+                  ),
+                ),
+              ],
             ),
-            RadioListTile<AppTheme>(
-              title: Text(themeLabels[AppTheme.dark]!),
-              value: AppTheme.dark,
-              groupValue: prefs.theme,
-              onChanged: (AppTheme? value) => Navigator.pop(context, value),
+            Row(
+              children: [
+                const Icon(Icons.dark_mode),
+                Expanded(
+                  child: RadioListTile<AppTheme>(
+                    title: Text(themeLabels[AppTheme.dark]!),
+                    value: AppTheme.dark,
+                    groupValue: prefs.theme,
+                    onChanged: (AppTheme? value) =>
+                        Navigator.pop(context, value),
+                  ),
+                ),
+              ],
             ),
-            RadioListTile<AppTheme>(
-              title: Text(themeLabels[AppTheme.light]!),
-              value: AppTheme.light,
-              groupValue: prefs.theme,
-              onChanged: (AppTheme? value) => Navigator.pop(context, value),
+            Row(
+              children: [
+                const Icon(Icons.light_mode),
+                Expanded(
+                  child: RadioListTile<AppTheme>(
+                    title: Text(themeLabels[AppTheme.light]!),
+                    value: AppTheme.light,
+                    groupValue: prefs.theme,
+                    onChanged: (AppTheme? value) =>
+                        Navigator.pop(context, value),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
