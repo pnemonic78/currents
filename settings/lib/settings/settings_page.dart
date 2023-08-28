@@ -4,6 +4,7 @@ import 'package:currentsapi_core/net/net_ext.dart';
 import 'package:currentsapi_model/prefs/theme.dart';
 import 'package:currentsapi_model/prefs/user_prefs.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:language_picker/language_picker.dart';
 import 'package:language_picker/languages.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -151,8 +152,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     title: Text(themeLabels[AppTheme.system]!),
                     value: AppTheme.system,
                     groupValue: prefs.theme,
-                    onChanged: (AppTheme? value) =>
-                        Navigator.pop(context, value),
+                    onChanged: (AppTheme? value) => Get.back(result: value),
                   ),
                 ),
               ],
@@ -165,8 +165,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     title: Text(themeLabels[AppTheme.dark]!),
                     value: AppTheme.dark,
                     groupValue: prefs.theme,
-                    onChanged: (AppTheme? value) =>
-                        Navigator.pop(context, value),
+                    onChanged: (AppTheme? value) => Get.back(result: value),
                   ),
                 ),
               ],
@@ -179,8 +178,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     title: Text(themeLabels[AppTheme.light]!),
                     value: AppTheme.light,
                     groupValue: prefs.theme,
-                    onChanged: (AppTheme? value) =>
-                        Navigator.pop(context, value),
+                    onChanged: (AppTheme? value) => Get.back(result: value),
                   ),
                 ),
               ],
@@ -220,11 +218,11 @@ class _SettingsPageState extends State<SettingsPage> {
   void _showProfile(BuildContext context) async {
     final args =
         ModalRoute.of(context)!.settings.arguments as SettingsArguments;
-    Navigator.pushNamed(context, args.routeProfile);
+    Get.toNamed(args.routeProfile);
   }
 
   void _clearProfile(BuildContext context) async {
-    showDialog(
+    final confirm = await showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Clear App Data'),
@@ -232,21 +230,19 @@ class _SettingsPageState extends State<SettingsPage> {
             const Text("Are you sure that you want to delete your app data?"),
         actions: [
           TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+            onPressed: () => Get.back(result: false),
             child: const Text("Cancel"),
           ),
           TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              _clearProfileYes();
-            },
+            onPressed: () => Get.back(result: true),
             child: const Text("OK"),
           ),
         ],
       ),
     );
+    if (confirm) {
+      _clearProfileYes();
+    }
   }
 
   void _clearProfileYes() async {

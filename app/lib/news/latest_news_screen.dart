@@ -4,6 +4,7 @@ import 'package:currentsapi_news/news/latest_news.dart';
 import 'package:currentsapi_news/news/news_arguments.dart';
 import 'package:currentsapi_settings/settings/settings_arguments.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class LatestNewsScreen extends StatefulWidget {
   const LatestNewsScreen({super.key});
@@ -39,26 +40,24 @@ class _LatestNewsScreenState extends State<LatestNewsScreen> {
   }
 
   void _showNews(Article article) {
-    Navigator.pushNamed(
-      context,
+    Get.toNamed(
       MyAppRoute.NewsArticle,
       arguments: NewsArguments(article),
     );
   }
 
   void _showSettings() {
-    Navigator.pushNamed(
-      context,
+    Get.toNamed(
       MyAppRoute.Settings,
       arguments: SettingsArguments(routeProfile: MyAppRoute.Profile),
     );
   }
 
   void _showSearch() {
-    Navigator.pushNamed(context, MyAppRoute.Search);
+    Get.toNamed(MyAppRoute.Search);
   }
 
   void _showFavorites() {
-    Navigator.pushNamed(context, MyAppRoute.Favorites);
+    Get.toNamed(MyAppRoute.Favorites);
   }
 }

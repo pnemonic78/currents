@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:get/get.dart';
 
 import 'my_route.dart';
 
@@ -24,19 +25,11 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _showNews(BuildContext context) async {
-    Navigator.pushNamedAndRemoveUntil(
-      context,
-      MyAppRoute.LatestNews,
-      (route) => false,
-    );
+    Get.offAllNamed(MyAppRoute.LatestNews);
   }
 
   void _showSignIn(BuildContext context) async {
-    Navigator.pushNamedAndRemoveUntil(
-      context,
-      MyAppRoute.SignIn,
-      (route) => false,
-    );
+    Get.offAllNamed(MyAppRoute.SignIn);
   }
 
   void _showHome(BuildContext context) {

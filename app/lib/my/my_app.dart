@@ -4,6 +4,7 @@ import 'package:currentsapi_app/settings/settings_screen.dart';
 import 'package:currentsapi_core/auth/firebase.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'my_home_page.dart';
 import 'my_route.dart';
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Currents API',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
@@ -48,10 +49,6 @@ class MyApp extends StatelessWidget {
   }
 
   void _goHome(BuildContext context) {
-    Navigator.pushNamedAndRemoveUntil(
-      context,
-      MyAppRoute.Home,
-      (route) => false,
-    );
+    Get.offAllNamed(MyAppRoute.Home);
   }
 }
