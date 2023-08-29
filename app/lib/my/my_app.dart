@@ -3,6 +3,7 @@ import 'package:currentsapi_app/news/news_article_screen.dart';
 import 'package:currentsapi_app/settings/settings_screen.dart';
 import 'package:currentsapi_core/auth/firebase.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -31,6 +32,11 @@ class MyApp extends StatelessWidget {
           onPrimary: Colors.black,
         ),
       ),
+      localizationsDelegates: const [
+        DefaultMaterialLocalizations.delegate,
+        DefaultWidgetsLocalizations.delegate,
+        DefaultCupertinoLocalizations.delegate,
+      ],
       initialRoute: MyAppRoute.Home,
       routes: {
         MyAppRoute.Home: (context) =>
