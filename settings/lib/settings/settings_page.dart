@@ -3,6 +3,7 @@ import 'package:currentsapi_core/data/repo_simple.dart';
 import 'package:currentsapi_core/net/net_ext.dart';
 import 'package:currentsapi_model/prefs/theme.dart';
 import 'package:currentsapi_model/prefs/user_prefs.dart';
+import 'package:currentsapi_settings/settings/settings_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:language_picker/language_picker.dart';
@@ -31,10 +32,10 @@ class _SettingsPageState extends State<SettingsPage> {
     buildSignature: 'Unknown',
     installerStore: 'Unknown',
   );
-  final themeLabels = <AppTheme, String>{
-    AppTheme.dark: 'Dark',
-    AppTheme.light: 'Light',
-    AppTheme.system: 'System Default',
+  final themeLabels = <AppThemeMode, String>{
+    AppThemeMode.dark: 'Dark',
+    AppThemeMode.light: 'Light',
+    AppThemeMode.system: 'System Default',
   };
 
   static const _photoSize = 150.0;
@@ -148,11 +149,11 @@ class _SettingsPageState extends State<SettingsPage> {
               children: [
                 const Icon(Icons.palette_outlined),
                 Expanded(
-                  child: RadioListTile<AppTheme>(
-                    title: Text(themeLabels[AppTheme.system]!),
-                    value: AppTheme.system,
+                  child: RadioListTile<AppThemeMode>(
+                    title: Text(themeLabels[AppThemeMode.system]!),
+                    value: AppThemeMode.system,
                     groupValue: prefs.theme,
-                    onChanged: (AppTheme? value) => Get.back(result: value),
+                    onChanged: (AppThemeMode? value) => Get.back(result: value),
                   ),
                 ),
               ],
@@ -161,11 +162,11 @@ class _SettingsPageState extends State<SettingsPage> {
               children: [
                 const Icon(Icons.dark_mode),
                 Expanded(
-                  child: RadioListTile<AppTheme>(
-                    title: Text(themeLabels[AppTheme.dark]!),
-                    value: AppTheme.dark,
+                  child: RadioListTile<AppThemeMode>(
+                    title: Text(themeLabels[AppThemeMode.dark]!),
+                    value: AppThemeMode.dark,
                     groupValue: prefs.theme,
-                    onChanged: (AppTheme? value) => Get.back(result: value),
+                    onChanged: (AppThemeMode? value) => Get.back(result: value),
                   ),
                 ),
               ],
@@ -174,11 +175,11 @@ class _SettingsPageState extends State<SettingsPage> {
               children: [
                 const Icon(Icons.light_mode),
                 Expanded(
-                  child: RadioListTile<AppTheme>(
-                    title: Text(themeLabels[AppTheme.light]!),
-                    value: AppTheme.light,
+                  child: RadioListTile<AppThemeMode>(
+                    title: Text(themeLabels[AppThemeMode.light]!),
+                    value: AppThemeMode.light,
                     groupValue: prefs.theme,
-                    onChanged: (AppTheme? value) => Get.back(result: value),
+                    onChanged: (AppThemeMode? value) => Get.back(result: value),
                   ),
                 ),
               ],
@@ -194,10 +195,10 @@ class _SettingsPageState extends State<SettingsPage> {
     }
   }
 
-  void _updateTheme(UserPreferences userPreferences, AppTheme theme) async {
-    userPreferences.theme = theme;
+  void _updateTheme(UserPreferences userPreferences, AppThemeMode themeMode) async {
+    userPreferences.theme = themeMode;
     _repo.setUserPreferences(userPreferences);
-    //TODO refresh app
+    applyTheme(themeMode);
   }
 
   Widget _profileImage(BuildContext context, UserPreferences preferences) {
@@ -246,7 +247,6 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   void _clearProfileYes() async {
-    //TODO delete the user's db
     _repo.setUserPreferences(null);
   }
 

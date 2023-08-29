@@ -1,3 +1,5 @@
+import 'package:currentsapi_core/data/repo.dart';
+import 'package:currentsapi_settings/settings/settings_ext.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -32,7 +34,14 @@ class _MyHomePageState extends State<MyHomePage> {
     Get.offAllNamed(MyAppRoute.SignIn);
   }
 
+  void _applyPreferences() async {
+    final repo = Get.find<CurrentsRepository>();
+    final prefs = await repo.getUserPreferences();
+    applyTheme(prefs.theme);
+  }
+
   void _showHome(BuildContext context) {
+    _applyPreferences();
     if (FirebaseAuth.instance.currentUser != null) {
       _showNews(context);
     } else {

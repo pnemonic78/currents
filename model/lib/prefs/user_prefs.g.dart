@@ -21,7 +21,7 @@ Map<String, dynamic> _$UserPreferencesToJson(UserPreferences instance) =>
     };
 
 const _$ThemeEnumMap = {
-  AppTheme.system: 'system',
-  AppTheme.dark: 'dark',
-  AppTheme.light: 'light',
+  AppThemeMode.system: 'system',
+  AppThemeMode.dark: 'dark',
+  AppThemeMode.light: 'light',
 };

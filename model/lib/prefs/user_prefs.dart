@@ -11,7 +11,7 @@ class UserPreferences {
   @JsonKey(name: "language")
   String language = getPlatformLanguage();
   @JsonKey(name: "theme")
-  AppTheme theme = AppTheme.system;
+  AppThemeMode theme = AppThemeMode.system;
 
   String? displayName;
   String? photoURL;

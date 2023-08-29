@@ -30,8 +30,8 @@ class NewsItem extends StatelessWidget {
     final imageExtent = imageHeight * 0.75;
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
-    final colorScheme = theme.colorScheme;
-    final Color textBG = theme.isDarkMode ? Colors.white54 : Colors.black54;
+    final Color textBG50 = theme.isDarkMode ? Colors.black38 : Colors.white38;
+    final Color textBG = theme.isDarkMode ? Colors.black54 : Colors.white54;
 
     final icon = Icon(
       Icons.image,
@@ -66,30 +66,29 @@ class NewsItem extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [Colors.transparent, textBG],
+                  colors: [Colors.transparent, textBG50, textBG],
                 ),
                 borderRadius: const BorderRadius.only(
                   bottomLeft: _cardRadius,
                   bottomRight: _cardRadius,
                 ),
               ),
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(12.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
                     article.title,
-                    style: textTheme.headlineSmall!.copyWith(
-                      color: colorScheme.onPrimary,
+                    style: textTheme.titleLarge!.copyWith(
                       overflow: TextOverflow.ellipsis,
+                      fontWeight: FontWeight.w500,
                     ),
                     maxLines: 4,
                   ),
                   Text(
                     timeago.format(article.published, clock: DateTime.now()),
-                    style: textTheme.bodySmall!
-                        .copyWith(color: colorScheme.onPrimary),
+                    style: textTheme.bodySmall,
                   ),
                 ],
               ),

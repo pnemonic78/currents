@@ -61,7 +61,9 @@ class _NewsArticlePageState extends State<NewsArticlePage> {
             padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 8.0),
             child: Text(
               article.title ?? "",
-              style: textTheme.headlineMedium,
+              style: textTheme.headlineMedium!.copyWith(
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
           Padding(
@@ -91,9 +93,12 @@ class _NewsArticlePageState extends State<NewsArticlePage> {
           ),
           Padding(
             padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 4.0),
-            child: TextButton(
-              onPressed: _gotoArticle,
-              child: const Text('Source Article'),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(minWidth: double.infinity),
+              child: ElevatedButton(
+                onPressed: _gotoArticle,
+                child: const Text('Source Article'),
+              ),
             ),
           ),
           (categories.isNotEmpty)

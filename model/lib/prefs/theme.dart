@@ -1,10 +1,10 @@
 import 'package:json_annotation/json_annotation.dart';
 
-enum AppTheme {
+enum AppThemeMode {
   @JsonValue("system")
   system,
-  @JsonValue("dark")
-  dark,
   @JsonValue("light")
   light,
+  @JsonValue("dark")
+  dark,
 }

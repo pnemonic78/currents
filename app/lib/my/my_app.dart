@@ -17,11 +17,21 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Currents API',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
-        useMaterial3: true,
+      theme: ThemeData.light(useMaterial3: true).copyWith(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.orange,
+          brightness: Brightness.light,
+          onPrimary: Colors.white,
+        ),
       ),
-      initialRoute: '/',
+      darkTheme: ThemeData.dark(useMaterial3: true).copyWith(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.deepOrangeAccent,
+          brightness: Brightness.dark,
+          onPrimary: Colors.black,
+        ),
+      ),
+      initialRoute: MyAppRoute.Home,
       routes: {
         MyAppRoute.Home: (context) =>
             const MyHomePage(title: 'Currents API Home Page'),
