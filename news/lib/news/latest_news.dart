@@ -1,8 +1,9 @@
-import 'package:currentsapi_core/data/repo_simple.dart';
+import 'package:currentsapi_core/data/repo.dart';
 import 'package:currentsapi_model/api/news.dart';
 import 'package:currentsapi_model/db/news_db.dart';
 import 'package:currentsapi_model/prefs/user_prefs.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'news_list.dart';
 
@@ -16,7 +17,7 @@ class LatestNews extends StatefulWidget {
 }
 
 class _LatestNewsState extends State<LatestNews> {
-  final _repo = CurrentsRepositorySimple();
+  final _repo = Get.find<CurrentsRepository>();
   UserPreferences _userPreferences = UserPreferences();
   bool _refreshed = true;
 

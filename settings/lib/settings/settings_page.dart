@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:currentsapi_core/data/repo_simple.dart';
+import 'package:currentsapi_core/data/repo.dart';
 import 'package:currentsapi_core/net/net_ext.dart';
 import 'package:currentsapi_model/prefs/theme.dart';
 import 'package:currentsapi_model/prefs/user_prefs.dart';
@@ -22,7 +22,7 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  final _repo = CurrentsRepositorySimple();
+  final _repo = Get.find<CurrentsRepository>();
   UserPreferences _userPreferences = UserPreferences();
   PackageInfo _packageInfo = PackageInfo(
     appName: 'Unknown',
