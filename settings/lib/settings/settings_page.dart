@@ -1,18 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:currentsapi_core/data/repo.dart';
-import 'package:currentsapi_core/net/net_ext.dart';
 import 'package:currentsapi_model/prefs/theme.dart';
 import 'package:currentsapi_model/prefs/user_prefs.dart';
-import 'package:currentsapi_settings/settings/settings_ext.dart';
+import 'package:currentsapi_settings/settings/settings_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:language_picker/language_picker.dart';
 import 'package:language_picker/languages.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:settings_ui/settings_ui.dart';
-import 'package:url_launcher/url_launcher.dart';
-
-import 'settings_arguments.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -22,16 +16,8 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  final _repo = Get.find<CurrentsRepository>();
-  UserPreferences _userPreferences = UserPreferences();
-  PackageInfo _packageInfo = PackageInfo(
-    appName: 'Unknown',
-    packageName: 'Unknown',
-    version: 'Unknown',
-    buildNumber: 'Unknown',
-    buildSignature: 'Unknown',
-    installerStore: 'Unknown',
-  );
+  final _controller = Get.put<SettingsController>(SettingsController());
+
   final themeLabels = <AppThemeMode, String>{
     AppThemeMode.dark: 'Dark',
     AppThemeMode.light: 'Light',
@@ -39,77 +25,65 @@ class _SettingsPageState extends State<SettingsPage> {
   };
 
   static const _photoSize = 150.0;
-  static const _urlGithub = "https://github.com/pnemonic78/currents";
-  static const _emailGithub = "pnemonic@gmail.com";
-
-  @override
-  void initState() {
-    super.initState();
-
-    _repo
-        .getUserPreferences()
-        .then((prefs) => setState(() => _userPreferences = prefs));
-    _initPackageInfo();
-  }
 
   @override
   Widget build(BuildContext context) {
-    final prefs = _userPreferences;
-
-    final language = Language.fromIsoCode(prefs.language);
-
-    return SettingsList(
-      sections: [
-        SettingsSection(
-          title: const Text('Account'),
-          tiles: <SettingsTile>[
-            SettingsTile(
-              title: Text(prefs.displayName ?? ""),
-              value: _profileImage(context, prefs),
-              onPressed: _showProfile,
-            ),
-            SettingsTile.navigation(
-              leading: const Icon(Icons.delete),
-              title: const Text('Clear Data'),
-              onPressed: _clearProfile,
-            ),
-          ],
-        ),
-        SettingsSection(
-          title: const Text('General'),
-          tiles: <SettingsTile>[
-            SettingsTile.navigation(
-              leading: const Icon(Icons.language),
-              title: const Text('Language'),
-              value: Text(language.name),
-              onPressed: _pickLanguage,
-            ),
-            SettingsTile.navigation(
-              leading: const Icon(Icons.palette),
-              title: const Text('Theme'),
-              value: Text(themeLabels[prefs.theme] ?? ""),
-              onPressed: _pickTheme,
-            ),
-          ],
-        ),
-        SettingsSection(
-          title: const Text('About'),
-          tiles: <SettingsTile>[
-            SettingsTile.navigation(
-              leading: const Icon(Icons.info),
-              title: const Text('Version'),
-              value: Text(_packageInfo.version),
-              onPressed: _showAbout,
-            ),
-            SettingsTile.navigation(
-              leading: const Icon(Icons.bug_report),
-              title: const Text('Issues'),
-              value: const Text("Report a problem, or request a feature"),
-              onPressed: _sendIssue,
-            ),
-          ],
-        ),
-      ],
+    return Obx(
+      () => SettingsList(
+        sections: [
+          SettingsSection(
+            title: const Text('Account'),
+            tiles: <SettingsTile>[
+              SettingsTile(
+                title: Text(_controller.user.value.displayName ?? ""),
+                value: _profileImage(context, _controller.user.value),
+                onPressed: _controller.onProfilePressed,
+              ),
+              SettingsTile.navigation(
+                leading: const Icon(Icons.delete),
+                title: const Text('Clear Data'),
+                onPressed: _confirmClearProfile,
+              ),
+            ],
+          ),
+          SettingsSection(
+            title: const Text('General'),
+            tiles: <SettingsTile>[
+              SettingsTile.navigation(
+                leading: const Icon(Icons.language),
+                title: const Text('Language'),
+                value: Text(
+                  Language.fromIsoCode(_controller.user.value.language).name,
+                ),
+                onPressed: _pickLanguage,
+              ),
+              SettingsTile.navigation(
+                leading: const Icon(Icons.palette),
+                title: const Text('Theme'),
+                value: Text(themeLabels[_controller.user.value.theme] ?? ""),
+                onPressed: _pickTheme,
+              ),
+            ],
+          ),
+          SettingsSection(
+            title: const Text('About'),
+            tiles: <SettingsTile>[
+              SettingsTile.navigation(
+                leading: const Icon(Icons.info),
+                title: const Text('Version'),
+                value: Text(_controller.packageInfo.value.version),
+                onPressed: _showAbout,
+              ),
+              SettingsTile.navigation(
+                leading: const Icon(Icons.bug_report),
+                title: const Text('Issues'),
+                value: const Text("Report a problem, or request a feature"),
+                onPressed: _controller.onIssuePressed,
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -121,22 +95,14 @@ class _SettingsPageState extends State<SettingsPage> {
       builder: (context) => LanguagePickerDialog(
         title: const Text('Select Language'),
         isSearchable: true,
-        onValuePicked: (Language language) => _updateLanguage(language),
+        onValuePicked: (Language language) => _controller.updateLanguage(language),
         itemBuilder: _buildLanguageItem,
       ),
     );
   }
 
-  void _updateLanguage(Language language) {
-    setState(() {
-      final prefs = _userPreferences;
-      prefs.language = language.isoCode;
-      _repo.setUserPreferences(prefs);
-    });
-  }
-
   void _pickTheme(BuildContext context) async {
-    final prefs = _userPreferences;
+    final prefs = _controller.user.value;
 
     final option = await showDialog(
       context: context,
@@ -189,16 +155,8 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
     );
     if (option != null) {
-      setState(() {
-        _updateTheme(prefs, option);
-      });
+      _controller.updateTheme(option);
     }
-  }
-
-  void _updateTheme(UserPreferences userPreferences, AppThemeMode themeMode) async {
-    userPreferences.theme = themeMode;
-    _repo.setUserPreferences(userPreferences);
-    applyTheme(themeMode);
   }
 
   Widget _profileImage(BuildContext context, UserPreferences preferences) {
@@ -216,13 +174,7 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  void _showProfile(BuildContext context) async {
-    final args =
-        ModalRoute.of(context)!.settings.arguments as SettingsArguments;
-    Get.toNamed(args.routeProfile);
-  }
-
-  void _clearProfile(BuildContext context) async {
+  void _confirmClearProfile(BuildContext context) async {
     final confirm = await showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -242,12 +194,8 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
     );
     if (confirm) {
-      _clearProfileYes();
+      _controller.clearProfile();
     }
-  }
-
-  void _clearProfileYes() async {
-    _repo.setUserPreferences(null);
   }
 
   void _showAbout(BuildContext context) async {
@@ -255,11 +203,11 @@ class _SettingsPageState extends State<SettingsPage> {
 
     showAboutDialog(
       context: context,
-      applicationVersion: _packageInfo.version,
+      applicationVersion: _controller.packageInfo.value.version,
       //TODO applicationIcon: const AppIconImage(),
       children: [
         InkWell(
-            onTap: _gotoHome,
+            onTap: _controller.onGitHubPressed,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
@@ -271,29 +219,5 @@ class _SettingsPageState extends State<SettingsPage> {
             )),
       ],
     );
-  }
-
-  void _gotoHome() async {
-    const urlString = _urlGithub;
-    final url = Uri.parse(urlString);
-    launchUrl(url);
-  }
-
-  Future<void> _initPackageInfo() async {
-    final info = await PackageInfo.fromPlatform();
-    setState(() {
-      _packageInfo = info;
-    });
-  }
-
-  void _sendIssue(BuildContext context) async {
-    final uri = Uri(
-      scheme: "mailto",
-      path: _emailGithub,
-      query: encodeQueryParameters(<String, String>{
-        'subject': _packageInfo.appName,
-      }),
-    );
-    launchUrl(uri);
   }
 }

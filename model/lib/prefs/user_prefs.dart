@@ -6,12 +6,12 @@ part 'user_prefs.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class UserPreferences {
-  @JsonKey(name: "favorites")
-  List<String> favorites = [];
   @JsonKey(name: "language")
   String language = getPlatformLanguage();
   @JsonKey(name: "theme")
   AppThemeMode theme = AppThemeMode.system;
+  @JsonKey(name: "favorites")
+  List<String> favorites = [];
 
   String? displayName;
   String? photoURL;
@@ -24,5 +24,15 @@ class UserPreferences {
   @override
   String toString() {
     return toJson().toString();
+  }
+
+  UserPreferences copy(
+      {String? language, AppThemeMode? theme, List<String>? favorites}) {
+    return UserPreferences()
+      ..language = language ?? this.language
+      ..theme = theme ?? this.theme
+      ..favorites = favorites ?? this.favorites
+      ..displayName = this.displayName
+      ..photoURL = this.photoURL;
   }
 }
