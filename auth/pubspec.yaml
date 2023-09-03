@@ -1,5 +1,5 @@
-name: currentsapi_app
-description: Flutter application for Currents API.
+name: currentsapi_auth
+description: Currents API - Authentication module.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -35,29 +35,18 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.5
 
-  currentsapi_auth:
-    path: ../auth
   currentsapi_core:
     path: ../core
-  currentsapi_domain:
-    path: ../domain
   currentsapi_model:
     path: ../model
-  currentsapi_news:
-    path: ../news
-  currentsapi_settings:
-    path: ../settings
-
-  flutter_native_splash: ^2.3.1
 
   # Firebase
+  cloud_firestore: ^4.8.4
   firebase_core: ^2.15.0
   firebase_auth: ^4.7.2
   firebase_ui_auth: ^1.6.2
   firebase_ui_oauth_google: ^1.2.7
 
-  timeago: ^3.5.0
-  cached_network_image: ^3.2.3
   get: ^4.6.5
 
 dev_dependencies:
@@ -112,11 +101,3 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
-
-# To generate the splash screen:
-# 1. flutter clean
-# 2. flutter pub get
-# 3. dart run flutter_native_splash:create
-flutter_native_splash:
-  color: "#FFF3E0"
-  image: assets/tikal_flower.png

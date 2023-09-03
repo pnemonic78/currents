@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:currentsapi_auth/user/user_controller.dart';
 import 'package:currentsapi_core/data/repo.dart';
 import 'package:currentsapi_core/data/repo_impl.dart';
 import 'package:currentsapi_core/data/repo_local.dart';
@@ -20,6 +21,8 @@ Future<void> injectDependencies() async {
 
   final repo = _provideRepository(local, remote);
   Get.put<CurrentsRepository>(repo);
+
+  Get.put<UserController>(UserController());
 }
 
 FirebaseFirestore _provideDatabase() {

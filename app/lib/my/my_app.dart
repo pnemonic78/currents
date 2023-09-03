@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
               providers: FirebaseHelper.providers,
               actions: [
                 AuthStateChangeAction<SignedIn>((context, state) {
-                  _goHome(context);
+                  _gotoHome(context);
                 }),
               ],
             ),
@@ -53,18 +53,13 @@ class MyApp extends StatelessWidget {
         MyAppRoute.NewsArticle: (context) => const NewsArticleScreen(),
         MyAppRoute.Profile: (context) => ProfileScreen(
               providers: FirebaseHelper.providers,
-              actions: [
-                SignedOutAction((context) {
-                  _goHome(context);
-                }),
-              ],
             ),
         MyAppRoute.Settings: (context) => const SettingsScreen(),
       },
     );
   }
 
-  void _goHome(BuildContext context) {
+  void _gotoHome(BuildContext context) {
     Get.offAllNamed(MyAppRoute.Home);
   }
 }

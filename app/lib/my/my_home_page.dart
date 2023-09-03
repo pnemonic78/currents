@@ -1,6 +1,6 @@
+import 'package:currentsapi_auth/user/user_controller.dart';
 import 'package:currentsapi_core/data/repo.dart';
 import 'package:currentsapi_settings/settings/settings_ext.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
@@ -17,20 +17,25 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final _userController = Get.find<UserController>();
+  bool _gotoBusy = false;
+
   @override
   void initState() {
     super.initState();
+    _applyPreferences();
+    _userController.listenSignedIn(_onSignedInChanged);
 
     // This is where you can initialize the resources needed by your app while
     // the splash screen is displayed.
     FlutterNativeSplash.remove();
   }
 
-  void _showNews(BuildContext context) async {
+  void _gotoNews() async {
     Get.offAllNamed(MyAppRoute.LatestNews);
   }
 
-  void _showSignIn(BuildContext context) async {
+  void _gotoSignIn() async {
     Get.offAllNamed(MyAppRoute.SignIn);
   }
 
@@ -40,18 +45,24 @@ class _MyHomePageState extends State<MyHomePage> {
     applyTheme(prefs.theme);
   }
 
-  void _showHome(BuildContext context) {
-    _applyPreferences();
-    if (FirebaseAuth.instance.currentUser != null) {
-      _showNews(context);
+  void _onSignedInChanged(bool isSignedIn) {
+    if (_gotoBusy) return;
+    _gotoBusy = true;
+    if (isSignedIn) {
+      _gotoNews();
     } else {
-      _showSignIn(context);
+      _gotoSignIn();
     }
+    _gotoBusy = false;
   }
 
   @override
   Widget build(BuildContext context) {
-    Future.microtask(() => _showHome(context));
+    if (!_gotoBusy) {
+      Future.microtask(
+        () => _userController.isSignedIn.value ? _gotoNews() : _gotoSignIn(),
+      );
+    }
     return Container(color: Theme.of(context).colorScheme.background);
   }
 }

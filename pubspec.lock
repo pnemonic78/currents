@@ -152,6 +152,13 @@ packages:
       relative: true
     source: path
     version: "1.0.0+1"
+  currentsapi_auth:
+    dependency: transitive
+    description:
+      path: auth
+      relative: true
+    source: path
+    version: "1.0.0+1"
   currentsapi_core:
     dependency: transitive
     description:
