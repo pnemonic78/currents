@@ -1,7 +1,6 @@
-import 'package:currentsapi_core/data/repo.dart';
+import 'package:currentsapi_auth/user/user_controller.dart';
 import 'package:currentsapi_core/net/net_ext.dart';
 import 'package:currentsapi_model/prefs/theme.dart';
-import 'package:currentsapi_model/prefs/user_prefs.dart';
 import 'package:currentsapi_settings/settings/settings_arguments.dart';
 import 'package:currentsapi_settings/settings/settings_ext.dart';
 import 'package:flutter/widgets.dart';
@@ -14,8 +13,9 @@ class SettingsController extends GetxController {
   static const _urlGithub = "https://github.com/pnemonic78/currents";
   static const _emailGithub = "pnemonic@gmail.com";
 
-  final _repo = Get.find<CurrentsRepository>();
-  final user = UserPreferences().obs;
+  final _userController = Get.find<UserController>();
+
+  get user => _userController.user;
 
   final packageInfo = PackageInfo(
     appName: 'Unknown',
@@ -28,7 +28,6 @@ class SettingsController extends GetxController {
 
   @override
   void onInit() async {
-    user.value = await _repo.getUserPreferences();
     packageInfo.value = await PackageInfo.fromPlatform();
     super.onInit();
   }
@@ -61,9 +60,9 @@ class SettingsController extends GetxController {
   void updateTheme(AppThemeMode themeMode) async {
     applyTheme(themeMode);
 
-    final prefs = user.value.copy(theme: themeMode);
-    _repo.setUserPreferences(prefs);
-    user.value = prefs;
+    final user = _userController.user.value;
+    final prefs = user.copy(theme: themeMode);
+    _userController.setUserPreferences(prefs);
   }
 
   void onProfilePressed(BuildContext context) {
@@ -76,12 +75,12 @@ class SettingsController extends GetxController {
   }
 
   void clearProfile() async {
-    _repo.setUserPreferences(null);
+    _userController.setUserPreferences(null);
   }
 
   void updateLanguage(Language language) {
-      final prefs = user.value.copy(language: language.isoCode);
-      _repo.setUserPreferences(prefs);
-      user.value = prefs;
+    final user = _userController.user.value;
+    final prefs = user.copy(language: language.isoCode);
+    _userController.setUserPreferences(prefs);
   }
 }

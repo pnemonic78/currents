@@ -1,3 +1,4 @@
+import 'package:currentsapi_model/api/news.dart';
 import 'package:currentsapi_model/intl/intl_utils.dart';
 import 'package:currentsapi_model/prefs/theme.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -11,7 +12,7 @@ class UserPreferences {
   @JsonKey(name: "theme")
   AppThemeMode theme = AppThemeMode.system;
   @JsonKey(name: "favorites")
-  List<String> favorites = [];
+  List<Article> favorites = [];
 
   String? displayName;
   String? photoURL;
@@ -27,7 +28,7 @@ class UserPreferences {
   }
 
   UserPreferences copy(
-      {String? language, AppThemeMode? theme, List<String>? favorites}) {
+      {String? language, AppThemeMode? theme, List<Article>? favorites}) {
     return UserPreferences()
       ..language = language ?? this.language
       ..theme = theme ?? this.theme

@@ -1,3 +1,4 @@
+import 'package:currentsapi_app/favorites/favorites_screen.dart';
 import 'package:currentsapi_app/news/latest_news_screen.dart';
 import 'package:currentsapi_app/news/news_article_screen.dart';
 import 'package:currentsapi_app/settings/settings_screen.dart';
@@ -39,8 +40,15 @@ class MyApp extends StatelessWidget {
       ],
       initialRoute: MyAppRoute.Home,
       routes: {
+        MyAppRoute.Favorites: (context) => const FavoritesScreen(),
         MyAppRoute.Home: (context) =>
             const MyHomePage(title: 'Currents API Home Page'),
+        MyAppRoute.LatestNews: (context) => const LatestNewsScreen(),
+        MyAppRoute.NewsArticle: (context) => const NewsArticleScreen(),
+        MyAppRoute.Profile: (context) => ProfileScreen(
+              providers: FirebaseHelper.providers,
+            ),
+        MyAppRoute.Settings: (context) => const SettingsScreen(),
         MyAppRoute.SignIn: (context) => SignInScreen(
               providers: FirebaseHelper.providers,
               actions: [
@@ -49,12 +57,6 @@ class MyApp extends StatelessWidget {
                 }),
               ],
             ),
-        MyAppRoute.LatestNews: (context) => const LatestNewsScreen(),
-        MyAppRoute.NewsArticle: (context) => const NewsArticleScreen(),
-        MyAppRoute.Profile: (context) => ProfileScreen(
-              providers: FirebaseHelper.providers,
-            ),
-        MyAppRoute.Settings: (context) => const SettingsScreen(),
       },
     );
   }

@@ -22,7 +22,7 @@ Future<void> injectDependencies() async {
   final repo = _provideRepository(local, remote);
   Get.put<CurrentsRepository>(repo);
 
-  Get.put<UserController>(UserController());
+  Get.put<UserController>(UserController(repo));
 }
 
 FirebaseFirestore _provideDatabase() {

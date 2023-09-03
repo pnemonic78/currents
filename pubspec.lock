@@ -173,6 +173,13 @@ packages:
       relative: true
     source: path
     version: "1.0.0+1"
+  currentsapi_favorites:
+    dependency: transitive
+    description:
+      path: favorites
+      relative: true
+    source: path
+    version: "1.0.0+1"
   currentsapi_model:
     dependency: transitive
     description:

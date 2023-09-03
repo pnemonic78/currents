@@ -1,5 +1,5 @@
-name: currentsapi_settings
-description: Currents API - Settings module.
+name: currentsapi_favorites
+description: Currents API - Favorite News module.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -43,14 +43,10 @@ dependencies:
     path: ../domain
   currentsapi_model:
     path: ../model
+  currentsapi_news:
+    path: ../news
 
-  cached_network_image: ^3.2.3
-  settings_ui: ^2.0.2
-  language_picker: ^0.4.3
-  package_info_plus: ^4.1.0
-  url_launcher: ^6.1.12
   get: ^4.6.5
-  intl: ^0.18.0
 
 dev_dependencies:
   flutter_test:

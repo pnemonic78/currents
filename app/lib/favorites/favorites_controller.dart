@@ -4,10 +4,9 @@ import 'package:currentsapi_favorites/favorites/favorites_ext.dart';
 import 'package:currentsapi_model/api/news.dart';
 import 'package:currentsapi_model/prefs/user_prefs.dart';
 import 'package:currentsapi_news/news/news_arguments.dart';
-import 'package:currentsapi_settings/settings/settings_arguments.dart';
 import 'package:get/get.dart';
 
-class NewsController extends GetxController {
+class FavoritesController extends GetxController {
   final _userController = Get.find<UserController>();
 
   Rx<UserPreferences> get user => _userController.user;
@@ -23,33 +22,6 @@ class NewsController extends GetxController {
     );
   }
 
-  void onSettingsPressed() {
-    _showSettings();
-  }
-
-  void _showSettings() {
-    Get.toNamed(
-      MyAppRoute.Settings,
-      arguments: SettingsArguments(routeProfile: MyAppRoute.Profile),
-    );
-  }
-
-  void onSearchPressed() {
-    _showSearch();
-  }
-
-  void _showSearch() {
-    Get.toNamed(MyAppRoute.Search);
-  }
-
-  void onFavoritesPressed() {
-    _showFavorites();
-  }
-
-  void _showFavorites() {
-    Get.toNamed(MyAppRoute.Favorites);
-  }
-
   void onFavoritePressed(Article article) {
     _toggleFavorite(article);
   }
@@ -58,9 +30,5 @@ class NewsController extends GetxController {
     final UserPreferences user = this.user.value.copy();
     user.toggleFavorite(article);
     _userController.setUserPreferences(user);
-  }
-
-  bool isFavorite(Article article) {
-    return user.value.isFavorite(article);
   }
 }
