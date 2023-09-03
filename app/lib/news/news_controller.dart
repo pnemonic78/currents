@@ -6,11 +6,14 @@ import 'package:currentsapi_model/prefs/user_prefs.dart';
 import 'package:currentsapi_news/news/news_arguments.dart';
 import 'package:currentsapi_settings/settings/settings_arguments.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class NewsController extends GetxController {
   final _userController = Get.find<UserController>();
 
   Rx<UserPreferences> get user => _userController.user;
+
+  Article? article;
 
   void onArticlePressed(Article article) {
     _showNews(article);
@@ -50,8 +53,11 @@ class NewsController extends GetxController {
     Get.toNamed(MyAppRoute.Favorites);
   }
 
-  void onFavoritePressed(Article article) {
-    _toggleFavorite(article);
+  void onFavoritePressed() {
+    final article = this.article;
+    if (article != null) {
+      _toggleFavorite(article);
+    }
   }
 
   void _toggleFavorite(Article article) async {
@@ -62,5 +68,18 @@ class NewsController extends GetxController {
 
   bool isFavorite(Article article) {
     return user.value.isFavorite(article);
+  }
+
+  void onArticleSourcePressed() {
+    final article = this.article;
+    if (article != null) {
+      _gotoArticle(article);
+    }
+  }
+
+  void _gotoArticle(Article article) async {
+    final urlString = article.url;
+    final url = Uri.parse(urlString);
+    launchUrl(url);
   }
 }

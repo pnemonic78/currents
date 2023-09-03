@@ -27,6 +27,7 @@ class FavoritesItem extends StatelessWidget {
           child: IconButton(
             onPressed: () => onFavoriteTap?.call(article),
             icon: const Icon(Icons.favorite),
+            color: Colors.red,
           ),
         ),
       ],

@@ -5,6 +5,7 @@ import 'package:currentsapi_model/prefs/user_prefs.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'latest_news_controller.dart';
 import 'news_list.dart';
 
 class LatestNews extends StatefulWidget {
@@ -17,18 +18,8 @@ class LatestNews extends StatefulWidget {
 }
 
 class _LatestNewsState extends State<LatestNews> {
-  final _repo = Get.find<CurrentsRepository>();
-  UserPreferences _userPreferences = UserPreferences();
+  final _controller = Get.put<LatestNewsController>(LatestNewsController());
   bool _refreshed = true;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _repo
-        .getUserPreferences()
-        .then((prefs) => setState(() => _userPreferences = prefs));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +30,7 @@ class _LatestNewsState extends State<LatestNews> {
     return RefreshIndicator(
       onRefresh: _refresh,
       child: StreamBuilder<NewsCollection>(
-        stream: _repo.getLatestNewsForUser(
-          _userPreferences,
-          refresh: _refreshed,
-        ),
+        stream: _controller.getLatestNewsForUser(refresh: _refreshed),
         builder: (context, snapshot) {
           _refreshed = false;
 
