@@ -1,8 +1,5 @@
-import 'package:currentsapi_app/my/my_route.dart';
-import 'package:currentsapi_model/api/news.dart';
+import 'package:currentsapi_app/news/news_controller.dart';
 import 'package:currentsapi_news/news/latest_news.dart';
-import 'package:currentsapi_news/news/news_arguments.dart';
-import 'package:currentsapi_settings/settings/settings_arguments.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -14,6 +11,8 @@ class LatestNewsScreen extends StatefulWidget {
 }
 
 class _LatestNewsScreenState extends State<LatestNewsScreen> {
+  final _controller = Get.put<NewsController>(NewsController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,41 +22,19 @@ class _LatestNewsScreenState extends State<LatestNewsScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.search),
-            onPressed: _showSearch,
+            onPressed: _controller.onSearchPressed,
           ),
           IconButton(
             icon: const Icon(Icons.favorite),
-            onPressed: _showFavorites,
+            onPressed: _controller.onFavoritesPressed,
           ),
           IconButton(
             icon: const Icon(Icons.settings),
-            onPressed: _showSettings,
+            onPressed: _controller.onSettingsPressed,
           ),
         ],
       ),
-      body: LatestNews(onTap: _showNews),
+      body: LatestNews(onTap: _controller.onArticlePressed),
     );
-  }
-
-  void _showNews(Article article) {
-    Get.toNamed(
-      MyAppRoute.NewsArticle,
-      arguments: NewsArguments(article),
-    );
-  }
-
-  void _showSettings() {
-    Get.toNamed(
-      MyAppRoute.Settings,
-      arguments: SettingsArguments(routeProfile: MyAppRoute.Profile),
-    );
-  }
-
-  void _showSearch() {
-    Get.toNamed(MyAppRoute.Search);
-  }
-
-  void _showFavorites() {
-    Get.toNamed(MyAppRoute.Favorites);
   }
 }

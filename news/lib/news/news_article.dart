@@ -3,9 +3,10 @@ import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:currentsapi_model/api/news.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart' as intl;
-import 'package:url_launcher/url_launcher.dart';
 
+import 'news_article_controller.dart';
 import 'news_item.dart';
 
 class NewsArticlePage extends StatefulWidget {
@@ -20,12 +21,19 @@ class NewsArticlePage extends StatefulWidget {
 class _NewsArticlePageState extends State<NewsArticlePage> {
   static const _imageAspectRatio = NewsItem.imageAspectRatio;
 
+  final _controller = Get.put<NewsArticleController>(NewsArticleController());
+
+  @override
+  void initState() {
+    _controller.article = widget.article;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final article = widget.article;
     final size = MediaQuery.of(context).size;
     final width = size.width;
-    final height = size.height;
     final imageWidth = width;
     final imageHeight = imageWidth / _imageAspectRatio;
     final theme = Theme.of(context);
@@ -41,7 +49,7 @@ class _NewsArticlePageState extends State<NewsArticlePage> {
         .map(
           (e) => ActionChip(
             label: Text(e),
-            onPressed: () => _filterCategory(e),
+            onPressed: () => _controller.filterCategory(e),
           ),
         )
         .toList();
@@ -60,7 +68,7 @@ class _NewsArticlePageState extends State<NewsArticlePage> {
           Padding(
             padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 8.0),
             child: Text(
-              article.title ?? "",
+              article.title,
               style: textTheme.headlineMedium!.copyWith(
                 fontWeight: FontWeight.w500,
               ),
@@ -96,7 +104,7 @@ class _NewsArticlePageState extends State<NewsArticlePage> {
             child: ConstrainedBox(
               constraints: const BoxConstraints(minWidth: double.infinity),
               child: ElevatedButton(
-                onPressed: _gotoArticle,
+                onPressed: _controller.onArticleSourcePressed,
                 child: const Text('Source Article'),
               ),
             ),
@@ -120,16 +128,5 @@ class _NewsArticlePageState extends State<NewsArticlePage> {
         ],
       ),
     );
-  }
-
-  void _gotoArticle() async {
-    final article = widget.article;
-    final urlString = article.url;
-    final url = Uri.parse(urlString);
-    launchUrl(url);
-  }
-
-  void _filterCategory(String category) async {
-    //TODO implement me!
   }
 }

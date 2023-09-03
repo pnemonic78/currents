@@ -16,7 +16,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final _myController = Get.put<MyHomeController>(MyHomeController());
+  final _controller = Get.put<MyHomeController>(MyHomeController());
 
   @override
   void initState() {
@@ -36,7 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    Future.microtask(() => _myController.onBuild());
+    Future.microtask(() => _controller.onBuild());
     return Container(color: Theme.of(context).colorScheme.background);
   }
 }

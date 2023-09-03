@@ -1,6 +1,7 @@
 import 'package:currentsapi_news/news/news_arguments.dart';
 import 'package:currentsapi_news/news/news_article.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class NewsArticleScreen extends StatefulWidget {
   const NewsArticleScreen({super.key});
@@ -12,7 +13,7 @@ class NewsArticleScreen extends StatefulWidget {
 class _NewsArticleScreenState extends State<NewsArticleScreen> {
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments as NewsArguments;
+    final args = Get.arguments as NewsArguments;
     final article = args.news;
 
     return Scaffold(
