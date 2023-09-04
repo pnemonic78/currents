@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 
 class FavoritesItem extends StatelessWidget {
   final Article article;
-  final ValueChanged<Article>? onArticleTap;
-  final ValueChanged<Article>? onFavoriteTap;
+  final ValueChanged<Article>? onArticlePressed;
+  final ValueChanged<Article>? onFavoritePressed;
 
   const FavoritesItem({
     super.key,
     required this.article,
-    this.onArticleTap,
-    this.onFavoriteTap,
+    this.onArticlePressed,
+    this.onFavoritePressed,
   });
 
   @override
@@ -20,12 +20,12 @@ class FavoritesItem extends StatelessWidget {
       children: [
         NewsItem(
           article: article,
-          onTap: onArticleTap,
+          onPressed: onArticlePressed,
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: IconButton(
-            onPressed: () => onFavoriteTap?.call(article),
+            onPressed: () => onFavoritePressed?.call(article),
             icon: const Icon(Icons.favorite),
             color: Colors.red,
           ),

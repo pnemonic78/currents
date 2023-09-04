@@ -8,12 +8,12 @@ import 'favorites_list.dart';
 class FavoritesPage extends StatefulWidget {
   const FavoritesPage({
     super.key,
-    this.onArticleTap,
-    this.onFavoriteTap,
+    this.onArticlePressed,
+    this.onFavoritePressed,
   });
 
-  final ValueChanged<Article>? onArticleTap;
-  final ValueChanged<Article>? onFavoriteTap;
+  final ValueChanged<Article>? onArticlePressed;
+  final ValueChanged<Article>? onFavoritePressed;
 
   @override
   State<FavoritesPage> createState() => _FavoritesPageState();
@@ -42,8 +42,8 @@ class _FavoritesPageState extends State<FavoritesPage> {
 
     return FavoritesList(
       news: news,
-      onArticleTap: widget.onArticleTap,
-      onFavoriteTap: widget.onFavoriteTap,
+      onArticlePressed: widget.onArticlePressed,
+      onFavoritePressed: widget.onFavoritePressed,
     );
   }
 }

@@ -21,8 +21,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         title: const Text("Favorites"),
       ),
       body: FavoritesPage(
-        onArticleTap: _controller.onArticlePressed,
-        onFavoriteTap: _controller.onFavoritePressed,
+        onArticlePressed: _controller.onArticlePressed,
+        onFavoritePressed: _controller.onFavoritePressed,
       ),
     );
   }

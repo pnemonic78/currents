@@ -3,16 +3,21 @@ import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:currentsapi_model/api/news.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart' as intl;
 
-import 'news_article_controller.dart';
 import 'news_item.dart';
 
 class NewsArticlePage extends StatefulWidget {
   final Article article;
+  final ValueChanged<Article>? onSourcePressed;
+  final ValueChanged<String>? onCategoryPressed;
 
-  const NewsArticlePage({super.key, required this.article});
+  const NewsArticlePage({
+    super.key,
+    required this.article,
+    this.onSourcePressed,
+    this.onCategoryPressed,
+  });
 
   @override
   State<NewsArticlePage> createState() => _NewsArticlePageState();
@@ -20,14 +25,6 @@ class NewsArticlePage extends StatefulWidget {
 
 class _NewsArticlePageState extends State<NewsArticlePage> {
   static const _imageAspectRatio = NewsItem.imageAspectRatio;
-
-  final _controller = Get.put<NewsArticleController>(NewsArticleController());
-
-  @override
-  void initState() {
-    _controller.article = widget.article;
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +46,7 @@ class _NewsArticlePageState extends State<NewsArticlePage> {
         .map(
           (e) => ActionChip(
             label: Text(e),
-            onPressed: () => _controller.filterCategory(e),
+            onPressed: () => widget.onCategoryPressed?.call(e),
           ),
         )
         .toList();
@@ -104,7 +101,7 @@ class _NewsArticlePageState extends State<NewsArticlePage> {
             child: ConstrainedBox(
               constraints: const BoxConstraints(minWidth: double.infinity),
               child: ElevatedButton(
-                onPressed: _controller.onArticleSourcePressed,
+                onPressed: () => widget.onSourcePressed?.call(article),
                 child: const Text('Source Article'),
               ),
             ),

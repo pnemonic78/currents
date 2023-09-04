@@ -34,7 +34,7 @@ class _LatestNewsScreenState extends State<LatestNewsScreen> {
           ),
         ],
       ),
-      body: LatestNews(onTap: _controller.onArticlePressed),
+      body: LatestNews(onArticlePressed: _controller.onArticlePressed),
     );
   }
 }

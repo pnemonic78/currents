@@ -7,13 +7,13 @@ class FavoritesList extends StatefulWidget {
   const FavoritesList({
     super.key,
     required this.news,
-    this.onArticleTap,
-    this.onFavoriteTap,
+    this.onArticlePressed,
+    this.onFavoritePressed,
   });
 
   final List<Article> news;
-  final ValueChanged<Article>? onArticleTap;
-  final ValueChanged<Article>? onFavoriteTap;
+  final ValueChanged<Article>? onArticlePressed;
+  final ValueChanged<Article>? onFavoritePressed;
 
   @override
   State<FavoritesList> createState() => _FavoritesListState();
@@ -31,11 +31,11 @@ class _FavoritesListState extends State<FavoritesList> {
   }
 
   void _onArticleTap(Article news) {
-    widget.onArticleTap?.call(news);
+    widget.onArticlePressed?.call(news);
   }
 
   void _onFavoriteTap(Article news) {
-    widget.onFavoriteTap?.call(news);
+    widget.onFavoritePressed?.call(news);
   }
 
   @override
@@ -55,8 +55,8 @@ class _FavoritesListState extends State<FavoritesList> {
       controller: _scrollController,
       itemBuilder: (BuildContext context, int index) => FavoritesItem(
         article: news[index],
-        onArticleTap: _onArticleTap,
-        onFavoriteTap: _onFavoriteTap,
+        onArticlePressed: _onArticleTap,
+        onFavoritePressed: _onFavoriteTap,
       ),
       itemCount: news.length,
     );

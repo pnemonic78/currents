@@ -9,9 +9,9 @@ import 'latest_news_controller.dart';
 import 'news_list.dart';
 
 class LatestNews extends StatefulWidget {
-  const LatestNews({super.key, this.onTap});
+  const LatestNews({super.key, this.onArticlePressed});
 
-  final ValueChanged<Article>? onTap;
+  final ValueChanged<Article>? onArticlePressed;
 
   @override
   State<LatestNews> createState() => _LatestNewsState();
@@ -52,7 +52,7 @@ class _LatestNewsState extends State<LatestNews> {
           final data = snapshot.requireData;
           return NewsList(
             news: data.news,
-            onTap: widget.onTap,
+            onArticlePressed: widget.onArticlePressed,
           );
         },
       ),

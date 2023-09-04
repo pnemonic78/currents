@@ -13,8 +13,6 @@ class NewsController extends GetxController {
 
   Rx<UserPreferences> get user => _userController.user;
 
-  Article? article;
-
   void onArticlePressed(Article article) {
     _showNews(article);
   }
@@ -53,11 +51,8 @@ class NewsController extends GetxController {
     Get.toNamed(MyAppRoute.Favorites);
   }
 
-  void onFavoritePressed() {
-    final article = this.article;
-    if (article != null) {
-      _toggleFavorite(article);
-    }
+  void onFavoritePressed(Article article) {
+    _toggleFavorite(article);
   }
 
   void _toggleFavorite(Article article) async {
@@ -70,16 +65,21 @@ class NewsController extends GetxController {
     return user.value.isFavorite(article);
   }
 
-  void onArticleSourcePressed() {
-    final article = this.article;
-    if (article != null) {
-      _gotoArticle(article);
-    }
+  void onArticleSourcePressed(Article article) {
+    _gotoArticle(article);
   }
 
   void _gotoArticle(Article article) async {
     final urlString = article.url;
     final url = Uri.parse(urlString);
     launchUrl(url);
+  }
+
+  void onCategoryPressed(String category) {
+    filterCategory(category);
+  }
+
+  void filterCategory(String category) async {
+    //TODO show search page with filter.
   }
 }

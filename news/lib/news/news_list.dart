@@ -7,11 +7,11 @@ class NewsList extends StatefulWidget {
   const NewsList({
     super.key,
     required this.news,
-    this.onTap,
+    this.onArticlePressed,
   });
 
   final List<Article> news;
-  final ValueChanged<Article>? onTap;
+  final ValueChanged<Article>? onArticlePressed;
 
   @override
   State<NewsList> createState() => _NewsListState();
@@ -29,7 +29,7 @@ class _NewsListState extends State<NewsList> {
   }
 
   void _onTap(Article news) {
-    widget.onTap?.call(news);
+    widget.onArticlePressed?.call(news);
   }
 
   @override
@@ -49,7 +49,7 @@ class _NewsListState extends State<NewsList> {
       controller: _scrollController,
       itemBuilder: (BuildContext context, int index) => NewsItem(
         article: news[index],
-        onTap: _onTap,
+        onPressed: _onTap,
       ),
       itemCount: news.length,
     );

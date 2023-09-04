@@ -11,14 +11,14 @@ const _cardRadius = Radius.circular(4.0);
 
 class NewsItem extends StatelessWidget {
   final Article article;
-  final ValueChanged<Article>? onTap;
+  final ValueChanged<Article>? onPressed;
 
   static const imageAspectRatio = 1.5;
 
   const NewsItem({
     super.key,
     required this.article,
-    this.onTap,
+    this.onPressed,
   });
 
   @override
@@ -42,7 +42,7 @@ class NewsItem extends StatelessWidget {
     return Card(
       clipBehavior: Clip.antiAliasWithSaveLayer,
       child: InkWell(
-        onTap: () => onTap?.call(article),
+        onTap: () => onPressed?.call(article),
         child: Stack(
           alignment: AlignmentDirectional.bottomCenter,
           children: [
