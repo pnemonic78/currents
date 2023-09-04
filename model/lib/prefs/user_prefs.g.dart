@@ -8,22 +8,25 @@ part of 'user_prefs.dart';
 
 UserPreferences _$UserPreferencesFromJson(Map<String, dynamic> json) =>
     UserPreferences()
-      ..favorites = (json['favorites'] as List<dynamic>?)
-              ?.map((e) => Article.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          const []
       ..language = json['language'] as String
-      ..theme = $enumDecode(_$ThemeEnumMap, json['theme']);
+      ..theme = $enumDecode(_$AppThemeModeEnumMap, json['theme'])
+      ..favorites = (json['favorites'] as List<dynamic>)
+          .map((e) => Article.fromJson(e as Map<String, dynamic>))
+          .toList()
+      ..displayName = json['displayName'] as String?
+      ..photoURL = json['photoURL'] as String?;
 
 Map<String, dynamic> _$UserPreferencesToJson(UserPreferences instance) =>
     <String, dynamic>{
-      'favorites': instance.favorites.map((e) => e.toJson()),
       'language': instance.language,
-      'theme': _$ThemeEnumMap[instance.theme]!,
+      'theme': _$AppThemeModeEnumMap[instance.theme]!,
+      'favorites': instance.favorites.map((e) => e.toJson()).toList(),
+      'displayName': instance.displayName,
+      'photoURL': instance.photoURL,
     };
 
-const _$ThemeEnumMap = {
+const _$AppThemeModeEnumMap = {
   AppThemeMode.system: 'system',
-  AppThemeMode.dark: 'dark',
   AppThemeMode.light: 'light',
+  AppThemeMode.dark: 'dark',
 };

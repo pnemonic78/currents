@@ -8,7 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 // `flutter test`
 void main() {
   test('Example news', () {
-    final file = File('test/latest-news.json').readAsStringSync();
+    final file = File('assets/latest-news.json').readAsStringSync();
     final json = jsonDecode(file);
     final response = NewsResponse.fromJson(json);
 
