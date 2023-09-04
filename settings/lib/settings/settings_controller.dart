@@ -1,6 +1,7 @@
 import 'package:currentsapi_auth/user/user_controller.dart';
 import 'package:currentsapi_core/net/net_ext.dart';
 import 'package:currentsapi_model/prefs/theme.dart';
+import 'package:currentsapi_model/prefs/user_prefs.dart';
 import 'package:currentsapi_settings/settings/settings_arguments.dart';
 import 'package:currentsapi_settings/settings/settings_ext.dart';
 import 'package:flutter/widgets.dart';
@@ -15,7 +16,7 @@ class SettingsController extends GetxController {
 
   final _userController = Get.find<UserController>();
 
-  get user => _userController.user;
+  Rx<UserPreferences> get user => _userController.user;
 
   final packageInfo = PackageInfo(
     appName: 'Unknown',

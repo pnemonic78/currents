@@ -1,6 +1,7 @@
 import 'package:currentsapi_app/favorites/favorites_screen.dart';
 import 'package:currentsapi_app/news/latest_news_screen.dart';
 import 'package:currentsapi_app/news/news_article_screen.dart';
+import 'package:currentsapi_app/search/search_screen.dart';
 import 'package:currentsapi_app/settings/settings_screen.dart';
 import 'package:currentsapi_core/auth/firebase.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
@@ -48,6 +49,7 @@ class MyApp extends StatelessWidget {
         MyAppRoute.Profile: (context) => ProfileScreen(
               providers: FirebaseHelper.providers,
             ),
+        MyAppRoute.Search: (context) => const SearchScreen(),
         MyAppRoute.Settings: (context) => const SettingsScreen(),
         MyAppRoute.SignIn: (context) => SignInScreen(
               providers: FirebaseHelper.providers,

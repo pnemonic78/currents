@@ -5,9 +5,9 @@ import 'package:get/get.dart';
 
 class UserController extends GetxController {
   late FirebaseAuth provider;
-  final isSignedIn = false.obs;
+  final Rx<bool> isSignedIn = false.obs;
   final CurrentsRepository _repository;
-  final user = UserPreferences().obs;
+  final Rx<UserPreferences> user = UserPreferences().obs;
 
   UserController(this._repository);
 
