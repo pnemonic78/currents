@@ -37,10 +37,17 @@ class _NewsListState extends State<NewsList> {
     final news = widget.news;
 
     if (news.isEmpty) {
-      return const Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Center(
-          child: Text("No news"),
+      final size = MediaQuery.of(context).size;
+
+      return SingleChildScrollView(
+        child: SizedBox(
+          height: size.height,
+          child: const Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Center(
+              child: Text("No news"),
+            ),
+          ),
         ),
       );
     }
