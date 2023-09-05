@@ -1,8 +1,8 @@
-class Region {
+class Language {
   final String id;
   final String name;
 
-  Region({
+  Language({
     required this.id,
     required this.name,
   });

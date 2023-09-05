@@ -1,14 +1,9 @@
-import 'package:currentsapi_model/api/region.dart';
-import 'package:currentsapi_model/api/regions_response.dart';
-import 'package:json_annotation/json_annotation.dart';
-
+import 'region.dart';
+import 'regions_response.dart';
 import 'status.dart';
 
-@JsonSerializable(explicitToJson: true, createToJson: false)
 class Regions {
-  @JsonKey(name: "status")
   final Status status;
-  @JsonKey(name: "regions")
   final List<Region> regions;
 
   Regions({
