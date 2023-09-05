@@ -1,3 +1,4 @@
+import 'package:currentsapi_model/db/filters_db.dart';
 import 'package:currentsapi_model/db/news_db.dart';
 import 'package:currentsapi_model/prefs/user_prefs.dart';
 
@@ -9,7 +10,8 @@ class CurrentRepositoryImpl extends CurrentsRepository {
 
   CurrentRepositoryImpl(this._local, this._remote);
 
-  static const _oldAgeMinutes = 5;
+  static const _oldAgeNewsMinutes = 5;
+  static const _oldAgeFiltersDays = 7;
 
   @override
   Future<UserPreferences> getUserPreferences() {
@@ -34,14 +36,14 @@ class CurrentRepositoryImpl extends CurrentsRepository {
 
     // if news is older than X minutes, then fetch from remote server.
     final diff = DateTime.now().difference(localNewsSnapshot.timestamp);
-    if (refresh || (diff.inMinutes >= _oldAgeMinutes)) {
+    if (refresh || (diff.inMinutes >= _oldAgeNewsMinutes)) {
       try {
         final remoteNews = await _remote.getLatestNews(languageCode).first;
         _local.setLatestNews(remoteNews, languageCode);
         yield remoteNews;
-      } on Exception catch (e, s) {
+      } on Exception catch (e) {
         print("getLatestNews Exception $e");
-        // use localNews
+        // use local
       }
     }
 
@@ -51,5 +53,30 @@ class CurrentRepositoryImpl extends CurrentsRepository {
   @override
   Future<void> setLatestNews(NewsCollection news, String languageCode) async {
     return _local.setLatestNews(news, languageCode);
+  }
+
+  @override
+  Future<FiltersCollection> getFilters({bool refresh = false}) async {
+    final localFilters = await _local.getFilters(refresh: refresh);
+
+    // if news is older than X minutes, then fetch from remote server.
+    final diff = DateTime.now().difference(localFilters.timestamp);
+    if (refresh || (diff.inDays >= _oldAgeFiltersDays)) {
+      try {
+        final remoteFilters = await _remote.getFilters();
+        _local.setFilters(remoteFilters);
+        return remoteFilters;
+      } on Exception catch (e) {
+        print("getFilters Exception $e");
+        // use local
+      }
+    }
+
+    return localFilters;
+  }
+
+  @override
+  Future<void> setFilters(FiltersCollection filters) async {
+    return _local.setFilters(filters);
   }
 }

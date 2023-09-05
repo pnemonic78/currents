@@ -1,6 +1,8 @@
 import 'package:currentsapi_core/news/net/api.dart';
 import 'package:currentsapi_model/api/news.dart';
+import 'package:currentsapi_model/api/region.dart';
 import 'package:currentsapi_model/api/status.dart';
+import 'package:currentsapi_model/db/filters_db.dart';
 import 'package:currentsapi_model/db/news_db.dart';
 import 'package:currentsapi_model/prefs/user_prefs.dart';
 
@@ -35,6 +37,36 @@ class CurrentsRepositoryRemote extends CurrentsRepository {
 
   @override
   Future<void> setLatestNews(NewsCollection news, String languageCode) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<FiltersCollection> getFilters({bool refresh = false}) async {
+    final categoriesResponse = await _api.categories();
+    final languagesResponse = await _api.languages();
+    final regionsResponse = await _api.regions();
+
+    final List<String> categories = (categoriesResponse.status == Status.ok)
+        ? categoriesResponse.categories
+        : const [];
+
+    final List<String> languages = (languagesResponse.status == Status.ok)
+        ? languagesResponse.languages.map((e) => e.id).toList()
+        : const ["en"];
+
+    final List<String> regions = (regionsResponse.status == Status.ok)
+        ? regionsResponse.regions.map((e) => e.id).toList()
+        : const [Region.regionInternational];
+
+    return FiltersCollection(
+      categories: categories,
+      languages: languages,
+      regions: regions,
+    );
+  }
+
+  @override
+  Future<void> setFilters(FiltersCollection filters) {
     throw UnimplementedError();
   }
 }

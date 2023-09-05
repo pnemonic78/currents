@@ -1,3 +1,4 @@
+import 'package:currentsapi_model/db/filters_db.dart';
 import 'package:currentsapi_model/db/news_db.dart';
 import 'package:currentsapi_model/prefs/user_prefs.dart';
 
@@ -26,4 +27,8 @@ abstract class CurrentsRepository {
       NewsCollection news, UserPreferences userPreferences) {
     return setLatestNews(news, userPreferences.language);
   }
+
+  Future<FiltersCollection> getFilters({bool refresh = false});
+
+  Future<void> setFilters(FiltersCollection filters);
 }

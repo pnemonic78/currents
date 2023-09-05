@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:currentsapi_model/db/filters_db.dart';
 import 'package:currentsapi_model/db/news_db.dart';
 import 'package:currentsapi_model/prefs/user_prefs.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,9 +9,12 @@ import 'repo.dart';
 class CurrentsRepositoryLocal extends CurrentsRepository {
   final CollectionReference<UserPreferences> _usersRef;
   final CollectionReference<NewsCollection> _latestNewsRef;
+  final CollectionReference<FiltersCollection> _filtersRef;
 
   static const _tableUsers = "users";
   static const _tableLatestNews = "latest-news";
+  static const _tableFilters = "filters";
+  static const _docFilters = "available";
 
   CurrentsRepositoryLocal(FirebaseFirestore db)
       : _usersRef = db.collection(_tableUsers).withConverter<UserPreferences>(
@@ -23,6 +27,12 @@ class CurrentsRepositoryLocal extends CurrentsRepository {
                   fromFirestore: (snapshots, _) =>
                       NewsCollection.fromJson(snapshots.data()!),
                   toFirestore: (article, _) => article.toJson(),
+                ),
+        _filtersRef =
+            db.collection(_tableFilters).withConverter<FiltersCollection>(
+                  fromFirestore: (snapshots, _) =>
+                      FiltersCollection.fromJson(snapshots.data()!),
+                  toFirestore: (filters, _) => filters.toJson(),
                 );
 
   @override
@@ -72,8 +82,7 @@ class CurrentsRepositoryLocal extends CurrentsRepository {
       final data = newsSnapshot.data();
       result = data ?? NewsCollection.empty();
     } else {
-      final news = await NewsCollection.parseLatestNews();
-      result = NewsCollection(news: news);
+      result = NewsCollection.empty();
     }
     yield result;
 
@@ -87,5 +96,28 @@ class CurrentsRepositoryLocal extends CurrentsRepository {
   Future<void> setLatestNews(NewsCollection news, String languageCode) async {
     final newsDoc = _latestNewsRef.doc(languageCode);
     newsDoc.set(news);
+  }
+
+  @override
+  Future<FiltersCollection> getFilters({bool refresh = false}) async {
+    final filtersDoc = _filtersRef.doc(_docFilters);
+    final filtersSnapshot = await filtersDoc.get();
+    if (filtersSnapshot.exists) {
+      final filtersData = filtersSnapshot.data();
+      if (filtersData != null) {
+        return filtersData;
+      }
+    }
+
+    FiltersCollection filters = FiltersCollection()
+      ..timestamp = DateTime.now().subtract(const Duration(days: 999));
+    await filtersDoc.set(filters);
+    return filters;
+  }
+
+  @override
+  Future<void> setFilters(FiltersCollection filters) async {
+    final filtersDoc = _filtersRef.doc(_docFilters);
+    await filtersDoc.set(filters);
   }
 }
