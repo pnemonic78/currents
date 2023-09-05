@@ -82,7 +82,8 @@ class CurrentsRepositoryLocal extends CurrentsRepository {
       final data = newsSnapshot.data();
       result = data ?? NewsCollection.empty();
     } else {
-      result = NewsCollection.empty();
+      result = NewsCollection.empty()
+        ..timestamp = DateTime.now().subtract(const Duration(days: 999));
     }
     yield result;
 

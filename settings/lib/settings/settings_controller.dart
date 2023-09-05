@@ -1,6 +1,7 @@
 import 'package:currentsapi_auth/user/user_controller.dart';
 import 'package:currentsapi_core/data/repo.dart';
 import 'package:currentsapi_core/net/net_ext.dart';
+import 'package:currentsapi_model/api/language.dart';
 import 'package:currentsapi_model/db/filters_db.dart';
 import 'package:currentsapi_model/prefs/theme.dart';
 import 'package:currentsapi_model/prefs/user_prefs.dart';
@@ -8,7 +9,6 @@ import 'package:currentsapi_settings/settings/settings_arguments.dart';
 import 'package:currentsapi_settings/settings/settings_ext.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:language_picker/languages.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -87,7 +87,7 @@ class SettingsController extends GetxController {
 
   void updateLanguage(Language language) {
     final user = _userController.user.value;
-    final prefs = user.copy(language: language.isoCode);
+    final prefs = user.copy(language: language.id);
     _userController.setUserPreferences(prefs);
   }
 }

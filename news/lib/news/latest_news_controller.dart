@@ -11,4 +11,15 @@ class LatestNewsController extends GetxController {
     final user = await _repo.getUserPreferences();
     yield* _repo.getLatestNewsForUser(user, refresh: refresh);
   }
+
+  Stream<NewsCollection> getLatestNews({
+    String? language,
+    bool refresh = false,
+  }) async* {
+    if (language != null) {
+      yield* _repo.getLatestNews(language, refresh: refresh);
+      return;
+    }
+    yield* getLatestNewsForUser(refresh: refresh);
+  }
 }

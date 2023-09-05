@@ -7,6 +7,7 @@ import 'package:currentsapi_core/auth/firebase.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 import 'package:get/get.dart';
 
 import 'my_home_page.dart';
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       localizationsDelegates: const [
+        LocaleNamesLocalizationsDelegate(),
         DefaultMaterialLocalizations.delegate,
         DefaultWidgetsLocalizations.delegate,
         DefaultCupertinoLocalizations.delegate,

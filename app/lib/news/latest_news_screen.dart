@@ -34,7 +34,12 @@ class _LatestNewsScreenState extends State<LatestNewsScreen> {
           ),
         ],
       ),
-      body: LatestNews(onArticlePressed: _controller.onArticlePressed),
+      body: Obx(
+        () => LatestNews(
+          language: _controller.user.value.language,
+          onArticlePressed: _controller.onArticlePressed,
+        ),
+      ),
     );
   }
 }

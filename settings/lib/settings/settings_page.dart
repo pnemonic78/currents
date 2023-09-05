@@ -1,11 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:currentsapi_model/api/language.dart' as cal;
 import 'package:currentsapi_model/prefs/theme.dart';
 import 'package:currentsapi_model/prefs/user_prefs.dart';
 import 'package:currentsapi_settings/settings/settings_controller.dart';
+import 'package:currentsapi_settings/settings/settings_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:language_picker/language_picker.dart';
-import 'package:language_picker/languages.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -53,7 +53,8 @@ class _SettingsPageState extends State<SettingsPage> {
                 leading: const Icon(Icons.language),
                 title: const Text('Language'),
                 value: Text(
-                  Language.fromIsoCode(_controller.user.value.language).name,
+                  getLanguageName(context, _controller.user.value.language) ??
+                      "",
                 ),
                 onPressed: _pickLanguage,
               ),
@@ -87,24 +88,63 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  Widget _buildLanguageItem(Language language) => Text(language.name);
-
   void _pickLanguage(BuildContext context) async {
-    showDialog(
+    final cal.Language? option = await showDialog(
       context: context,
-      builder: (context) => LanguagePickerDialog(
+      builder: (context) => AlertDialog(
         title: const Text('Select Language'),
-        isSearchable: true,
-        onValuePicked: (Language language) => _controller.updateLanguage(language),
-        itemBuilder: _buildLanguageItem,
+        content: _buildLanguageContent(context),
+      ),
+    );
+    if (option != null) {
+      _controller.updateLanguage(option);
+    }
+  }
+
+  Widget _buildLanguageContent(BuildContext context) {
+    final languageCodes = _controller.filters.value.languages;
+    final List<cal.Language> languages = languageCodes
+        .map((e) => (e, getLanguageName(context, e)))
+        .where((p) => p.$2 != null)
+        .map((p) => cal.Language(id: p.$1, name: p.$2!))
+        .toList()
+      ..sort((a, b) => a.name.compareTo(b.name));
+
+    final userLanguageCode = _controller.user.value.language;
+    final languageSelected = cal.Language(id: userLanguageCode, name: "");
+
+    return SizedBox(
+      width: double.maxFinite,
+      child: ListView(
+        shrinkWrap: true,
+        children: languages
+            .map(
+              (item) => SimpleDialogOption(
+                child: _buildLanguageItem(context, item, languageSelected),
+                onPressed: () => Get.back(result: item),
+              ),
+            )
+            .toList(),
       ),
     );
   }
 
+  Widget _buildLanguageItem(
+    BuildContext context,
+    cal.Language language,
+    cal.Language selected,
+  ) =>
+      RadioListTile<cal.Language>(
+        title: Text(language.name),
+        value: language,
+        groupValue: selected,
+        onChanged: (cal.Language? value) => Get.back(result: value),
+      );
+
   void _pickTheme(BuildContext context) async {
     final prefs = _controller.user.value;
 
-    final option = await showDialog(
+    final AppThemeMode? option = await showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Select Theme'),

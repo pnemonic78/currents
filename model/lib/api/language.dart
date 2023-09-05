@@ -11,4 +11,12 @@ class Language {
   String toString() {
     return name;
   }
+
+  @override
+  int get hashCode => id.hashCode;
+
+  @override
+  bool operator ==(Object other) {
+    return (other is Language) && (id == other.id);
+  }
 }

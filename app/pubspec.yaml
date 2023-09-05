@@ -64,6 +64,7 @@ dependencies:
   cached_network_image: ^3.2.3
   get: ^4.6.5
   url_launcher: ^6.1.12
+  flutter_localized_locales: ^2.0.4
 
 dev_dependencies:
   flutter_test:

@@ -394,6 +394,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_localized_locales:
+    dependency: transitive
+    description:
+      name: flutter_localized_locales
+      sha256: f219350dffcfd56692b4e41953710c2975888dd9c507d977ec6853d7ea140336
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.4"
   flutter_native_splash:
     dependency: transitive
     description:
@@ -532,14 +540,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.8.1"
-  language_picker:
-    dependency: transitive
-    description:
-      name: language_picker
-      sha256: "1f5293675ec1359b72979dac8f8d4662d18d6d1b0a484343367cfbbbbcfca3f3"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.4.3"
   lints:
     dependency: transitive
     description:
@@ -700,14 +700,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.1"
-  recase:
-    dependency: transitive
-    description:
-      name: recase
-      sha256: e4eb4ec2dcdee52dcf99cb4ceabaffc631d7424ee55e56f280bc039737f89213
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.1.0"
   retrofit:
     dependency: transitive
     description:

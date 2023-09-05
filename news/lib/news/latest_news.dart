@@ -7,8 +7,13 @@ import 'latest_news_controller.dart';
 import 'news_list.dart';
 
 class LatestNews extends StatefulWidget {
-  const LatestNews({super.key, this.onArticlePressed});
+  const LatestNews({
+    super.key,
+    this.language,
+    this.onArticlePressed,
+  });
 
+  final String? language;
   final ValueChanged<Article>? onArticlePressed;
 
   @override
@@ -28,7 +33,10 @@ class _LatestNewsState extends State<LatestNews> {
     return RefreshIndicator(
       onRefresh: _refresh,
       child: StreamBuilder<NewsCollection>(
-        stream: _controller.getLatestNewsForUser(refresh: _refreshed),
+        stream: _controller.getLatestNews(
+          language: widget.language,
+          refresh: _refreshed,
+        ),
         builder: (context, snapshot) {
           _refreshed = false;
 
