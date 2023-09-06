@@ -1,6 +1,8 @@
 import 'package:currentsapi_core/news/net/api.dart';
+import 'package:currentsapi_model/api/language.dart';
 import 'package:currentsapi_model/api/news.dart';
 import 'package:currentsapi_model/api/region.dart';
+import 'package:currentsapi_model/api/search_request.dart';
 import 'package:currentsapi_model/api/status.dart';
 import 'package:currentsapi_model/db/filters_db.dart';
 import 'package:currentsapi_model/db/news_db.dart';
@@ -52,7 +54,7 @@ class CurrentsRepositoryRemote extends CurrentsRepository {
 
     final List<String> languages = (languagesResponse.status == Status.ok)
         ? languagesResponse.languages.map((e) => e.id).toList()
-        : const ["en"];
+        : const [Language.english];
 
     final List<String> regions = (regionsResponse.status == Status.ok)
         ? regionsResponse.regions.map((e) => e.id).toList()
@@ -67,6 +69,19 @@ class CurrentsRepositoryRemote extends CurrentsRepository {
 
   @override
   Future<void> setFilters(FiltersCollection filters) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Stream<NewsCollection> getSearch(SearchRequest request) async* {
+    final response = await _api.search(request);
+    final List<Article> news =
+        (response.status == Status.ok) ? response.news : const [];
+    yield NewsCollection(news: news);
+  }
+
+  @override
+  Future<void> setSearch(NewsCollection? result) async {
     throw UnimplementedError();
   }
 }

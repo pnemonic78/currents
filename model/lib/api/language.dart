@@ -2,6 +2,8 @@ class Language {
   final String id;
   final String name;
 
+  static const english = "en";
+
   Language({
     required this.id,
     required this.name,

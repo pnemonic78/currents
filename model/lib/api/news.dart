@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import 'language.dart';
+
 part 'news.g.dart';
 
 @JsonSerializable(explicitToJson: true)
@@ -30,7 +32,7 @@ class Article {
     required this.url,
     this.author,
     this.image,
-    this.language = "en",
+    this.language = Language.english,
     this.category = const [],
     required this.published,
   });

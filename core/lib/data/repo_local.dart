@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:currentsapi_model/api/search_request.dart';
 import 'package:currentsapi_model/db/filters_db.dart';
 import 'package:currentsapi_model/db/news_db.dart';
 import 'package:currentsapi_model/prefs/user_prefs.dart';
@@ -10,10 +11,12 @@ class CurrentsRepositoryLocal extends CurrentsRepository {
   final CollectionReference<UserPreferences> _usersRef;
   final CollectionReference<NewsCollection> _latestNewsRef;
   final CollectionReference<FiltersCollection> _filtersRef;
+  final CollectionReference<NewsCollection> _searchesRef;
 
   static const _tableUsers = "users";
   static const _tableLatestNews = "latest-news";
   static const _tableFilters = "filters";
+  static const _tableSearches = "searches";
   static const _docFilters = "available";
 
   CurrentsRepositoryLocal(FirebaseFirestore db)
@@ -33,12 +36,21 @@ class CurrentsRepositoryLocal extends CurrentsRepository {
                   fromFirestore: (snapshots, _) =>
                       FiltersCollection.fromJson(snapshots.data()!),
                   toFirestore: (filters, _) => filters.toJson(),
+                ),
+        _searchesRef =
+            db.collection(_tableSearches).withConverter<NewsCollection>(
+                  fromFirestore: (snapshots, _) =>
+                      NewsCollection.fromJson(snapshots.data()!),
+                  toFirestore: (article, _) => article.toJson(),
                 );
+
+  User? get user => FirebaseAuth.instance.currentUser;
 
   @override
   Future<UserPreferences> getUserPreferences() async {
-    final user = FirebaseAuth.instance.currentUser;
-    final String userId = user!.uid;
+    final user = this.user;
+    if (user == null) return UserPreferences();
+    final String userId = user.uid;
 
     final userDoc = _usersRef.doc(userId);
     final userSnapshot = await userDoc.get();
@@ -60,8 +72,9 @@ class CurrentsRepositoryLocal extends CurrentsRepository {
 
   @override
   Future<void> setUserPreferences(UserPreferences? userPreferences) async {
-    final user = FirebaseAuth.instance.currentUser;
-    final String userId = user!.uid;
+    final user = this.user;
+    if (user == null) return;
+    final String userId = user.uid;
     final userDoc = _usersRef.doc(userId);
     if (userPreferences != null) {
       userDoc.set(userPreferences);
@@ -120,5 +133,24 @@ class CurrentsRepositoryLocal extends CurrentsRepository {
   Future<void> setFilters(FiltersCollection filters) async {
     final filtersDoc = _filtersRef.doc(_docFilters);
     await filtersDoc.set(filters);
+  }
+
+  @override
+  Stream<NewsCollection> getSearch(SearchRequest request) async* {
+    // TODO: implement getSearch
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> setSearch(NewsCollection? result) async {
+    final user = this.user;
+    if (user == null) return;
+    final String userId = user.uid;
+    final searchDoc = _searchesRef.doc(userId);
+    if (result != null) {
+      searchDoc.set(result);
+    } else {
+      searchDoc.delete();
+    }
   }
 }

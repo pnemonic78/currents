@@ -2,6 +2,8 @@ import 'package:currentsapi_search/search/search_form.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'search_controller.dart';
+
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
 
@@ -10,7 +12,7 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  final _controller = Get.put<SearchController>(SearchController());
+  final _controller = Get.put<SearchScreenController>(SearchScreenController());
 
   @override
   Widget build(BuildContext context) {

@@ -4,6 +4,7 @@ import 'package:currentsapi_model/api/categories_response.dart';
 import 'package:currentsapi_model/api/languages.dart';
 import 'package:currentsapi_model/api/news_response.dart';
 import 'package:currentsapi_model/api/regions.dart';
+import 'package:currentsapi_model/api/search_request.dart';
 
 import 'api.dart';
 
@@ -38,5 +39,24 @@ class CurrentsApiImpl extends CurrentsApi {
   Future<Regions> regions() async {
     final response = await _client.getAvailableRegions(apiKey: _apiKey);
     return Regions.fromResponse(response);
+  }
+
+  @override
+  Future<NewsResponse> search(SearchRequest request) {
+    return _client.getSearch(
+      apiKey: _apiKey,
+      language: request.language,
+      startDate: request.startDate,
+      endDate: request.endDate,
+      type: request.type,
+      country: request.country,
+      category: request.category,
+      domain: request.domain,
+      domainNot: request.domainNot,
+      keywords: request.keywords,
+      pageNumber: request.pageNumber,
+      pageSize: request.pageSize,
+      limit: request.limit,
+    );
   }
 }

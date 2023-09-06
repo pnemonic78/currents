@@ -1,3 +1,4 @@
+import 'package:currentsapi_model/api/search_request.dart';
 import 'package:currentsapi_model/db/filters_db.dart';
 import 'package:currentsapi_model/db/news_db.dart';
 import 'package:currentsapi_model/prefs/user_prefs.dart';
@@ -31,4 +32,8 @@ abstract class CurrentsRepository {
   Future<FiltersCollection> getFilters({bool refresh = false});
 
   Future<void> setFilters(FiltersCollection filters);
+
+  Stream<NewsCollection> getSearch(SearchRequest request);
+
+  Future<void> setSearch(NewsCollection? result);
 }

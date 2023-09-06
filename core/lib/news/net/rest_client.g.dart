@@ -23,7 +23,7 @@ class _RestClient implements RestClient {
   @override
   Future<NewsResponse> getLatest({
     required String apiKey,
-    required String language,
+    String language = Language.english,
   }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -133,6 +133,62 @@ class _RestClient implements RestClient {
               baseUrl,
             ))));
     final value = RegionsResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<NewsResponse> getSearch({
+    required String apiKey,
+    String language = Language.english,
+    String? startDate,
+    String? endDate,
+    int type = SearchContentType.news,
+    String country = Region.regionInternational,
+    String? category,
+    String? domain,
+    String? domainNot,
+    String? keywords,
+    int pageNumber = 1,
+    int pageSize = 30,
+    int limit = 30,
+  }) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'apiKey': apiKey,
+      r'language': language,
+      r'start_date': startDate,
+      r'end_date': endDate,
+      r'type': type,
+      r'country': country,
+      r'category': category,
+      r'domain': domain,
+      r'domain_not': domainNot,
+      r'keywords': keywords,
+      r'page_number': pageNumber,
+      r'page_size': pageSize,
+      r'limit': limit,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<NewsResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/search',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = NewsResponse.fromJson(_result.data!);
     return value;
   }
 

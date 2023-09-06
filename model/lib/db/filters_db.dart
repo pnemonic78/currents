@@ -1,6 +1,8 @@
 import 'package:currentsapi_model/api/region.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import '../api/language.dart';
+
 part 'filters_db.g.dart';
 
 @JsonSerializable(explicitToJson: true)
@@ -16,7 +18,7 @@ class FiltersCollection {
 
   FiltersCollection({
     this.categories = const [],
-    this.languages = const ["en"],
+    this.languages = const [Language.english],
     this.regions = const [Region.regionInternational],
   });
 

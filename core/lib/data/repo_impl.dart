@@ -1,3 +1,4 @@
+import 'package:currentsapi_model/api/search_request.dart';
 import 'package:currentsapi_model/db/filters_db.dart';
 import 'package:currentsapi_model/db/news_db.dart';
 import 'package:currentsapi_model/prefs/user_prefs.dart';
@@ -78,5 +79,15 @@ class CurrentRepositoryImpl extends CurrentsRepository {
   @override
   Future<void> setFilters(FiltersCollection filters) async {
     return _local.setFilters(filters);
+  }
+
+  @override
+  Stream<NewsCollection> getSearch(SearchRequest request) async* {
+    yield* _local.getSearch(request);
+  }
+
+  @override
+  Future<void> setSearch(NewsCollection? result) async {
+    return _local.setSearch(result);
   }
 }
