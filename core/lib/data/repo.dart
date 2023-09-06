@@ -33,7 +33,10 @@ abstract class CurrentsRepository {
 
   Future<void> setFilters(FiltersCollection filters);
 
-  Stream<NewsCollection> getSearch(SearchRequest request);
+  Stream<NewsCollection> getSearch(
+    SearchRequest request, {
+    bool refresh = false,
+  });
 
   Future<void> setSearch(NewsCollection? result);
 }

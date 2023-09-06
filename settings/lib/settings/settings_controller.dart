@@ -83,6 +83,7 @@ class SettingsController extends GetxController {
 
   void clearProfile() async {
     _userController.setUserPreferences(null);
+    _repo.setSearch(null);
   }
 
   void updateLanguage(Language language) {

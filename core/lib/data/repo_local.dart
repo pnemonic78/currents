@@ -136,9 +136,33 @@ class CurrentsRepositoryLocal extends CurrentsRepository {
   }
 
   @override
-  Stream<NewsCollection> getSearch(SearchRequest request) async* {
-    // TODO: implement getSearch
-    throw UnimplementedError();
+  Stream<NewsCollection> getSearch(
+    SearchRequest request, {
+    bool refresh = false,
+  }) async* {
+    final user = this.user;
+    if (user == null) {
+      yield NewsCollection.empty();
+      return;
+    }
+    final String userId = user.uid;
+
+    final searchDoc = _searchesRef.doc(userId);
+    final searchSnapshot = await searchDoc.get();
+    NewsCollection result;
+    if (searchSnapshot.exists) {
+      final data = searchSnapshot.data();
+      result = data ?? NewsCollection.empty();
+    } else {
+      result = NewsCollection.empty()
+        ..timestamp = DateTime.now().subtract(const Duration(days: 999));
+    }
+    yield result;
+
+    yield* searchDoc
+        .snapshots()
+        .where((snapshot) => snapshot.exists)
+        .map((snapshot) => snapshot.data() ?? result);
   }
 
   @override

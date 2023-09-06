@@ -716,6 +716,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.27.7"
+  sealed_countries:
+    dependency: transitive
+    description:
+      name: sealed_countries
+      sha256: eca0ee5479295ca46ecd50d62812f64ab96304e1dea3a3454506f28efcbd9c7f
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.5.0"
+  sealed_currencies:
+    dependency: transitive
+    description:
+      name: sealed_currencies
+      sha256: "473a903e829c4d45eaeeb92a851443aa6536843d01193bd8c744751c541236a2"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.5.0"
   sealed_languages:
     dependency: transitive
     description:

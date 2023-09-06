@@ -13,7 +13,7 @@ Article _$ArticleFromJson(Map<String, dynamic> json) => Article(
       url: json['url'] as String,
       author: json['author'] as String?,
       image: json['image'] as String?,
-      language: json['language'] as String? ?? "en",
+      language: json['language'] as String? ?? Language.english,
       category: (json['category'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??

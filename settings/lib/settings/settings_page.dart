@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:currentsapi_core/ui/locale_ext.dart';
 import 'package:currentsapi_model/api/language.dart' as cal;
 import 'package:currentsapi_model/prefs/theme.dart';
 import 'package:currentsapi_model/prefs/user_prefs.dart';
 import 'package:currentsapi_settings/settings/settings_controller.dart';
-import 'package:currentsapi_settings/settings/settings_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:settings_ui/settings_ui.dart';

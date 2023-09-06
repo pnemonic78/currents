@@ -21,7 +21,9 @@ class _SearchScreenState extends State<SearchScreen> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text("Search"),
       ),
-      body: SearchForm(),
+      body: SearchForm(
+        onSearchPressed: _controller.onSearchPressed,
+      ),
     );
   }
 }

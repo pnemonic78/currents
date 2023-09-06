@@ -73,7 +73,10 @@ class CurrentsRepositoryRemote extends CurrentsRepository {
   }
 
   @override
-  Stream<NewsCollection> getSearch(SearchRequest request) async* {
+  Stream<NewsCollection> getSearch(
+    SearchRequest request, {
+    bool refresh = true,
+  }) async* {
     final response = await _api.search(request);
     final List<Article> news =
         (response.status == Status.ok) ? response.news : const [];

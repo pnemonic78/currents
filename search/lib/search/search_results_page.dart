@@ -1,0 +1,76 @@
+import 'package:currentsapi_model/api/news.dart';
+import 'package:currentsapi_model/api/search_request.dart';
+import 'package:currentsapi_model/db/news_db.dart';
+import 'package:currentsapi_news/news/news_list.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import 'search_controller.dart';
+
+class SearchResultsPage extends StatefulWidget {
+  const SearchResultsPage({
+    super.key,
+    required this.request,
+    this.onArticlePressed,
+  });
+
+  final SearchRequest request;
+  final ValueChanged<Article>? onArticlePressed;
+
+  @override
+  State<SearchResultsPage> createState() => _SearchResultsPageState();
+}
+
+class _SearchResultsPageState extends State<SearchResultsPage> {
+  final _controller = Get.isRegistered<SearchFormController>()
+      ? Get.find<SearchFormController>()
+      : Get.put<SearchFormController>(SearchFormController());
+  bool _refreshed = true;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
+    final colorScheme = theme.colorScheme;
+
+    return RefreshIndicator(
+      onRefresh: _refresh,
+      child: StreamBuilder<NewsCollection>(
+        stream: _controller.getSearchResults(
+          request: widget.request,
+          refresh: _refreshed,
+        ),
+        builder: (context, snapshot) {
+          _refreshed = false;
+
+          if (snapshot.hasError) {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  snapshot.error.toString(),
+                  style:
+                      textTheme.bodyLarge?.copyWith(color: colorScheme.error),
+                ),
+              ),
+            );
+          }
+          if (!snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          final data = snapshot.requireData;
+          return NewsList(
+            news: data.news,
+            onArticlePressed: widget.onArticlePressed,
+          );
+        },
+      ),
+    );
+  }
+
+  Future<void> _refresh() async {
+    setState(() {
+      _refreshed = true;
+    });
+  }
+}

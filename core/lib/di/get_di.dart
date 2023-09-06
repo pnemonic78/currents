@@ -8,7 +8,9 @@ import 'package:currentsapi_core/news/net/api.dart';
 import 'package:currentsapi_core/news/net/api_impl.dart';
 import 'package:currentsapi_core/news/net/rest_client.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 Future<void> injectDependencies() async {
   final db = _provideDatabase();
@@ -34,7 +36,16 @@ CurrentsRepository _provideRepositoryLocal(FirebaseFirestore db) {
 }
 
 Dio _provideHttpClient() {
-  return Dio();
+  final dio = Dio();
+  if (kDebugMode) {
+    dio.interceptors.add(
+      PrettyDioLogger(
+        requestHeader: true,
+        compact: false,
+      ),
+    );
+  }
+  return dio;
 }
 
 RestClient _provideRest(Dio dio) {

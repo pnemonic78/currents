@@ -9,14 +9,14 @@ class SearchRequest {
   String language;
 
   // Search news after the given date
-  // Valid format : Date format should be YYYY-MM-ddTHH:mm:ss.ss±hh:mm, which follows the offcial standard of RFC 3339 Date and Time on the Internet
-  String? startDate;
+  // Valid format : Date format should be YYYY-MM-ddTHH:mm:ss.ss±hh:mm, which follows the official standard of RFC 3339 Date and Time on the Internet
+  DateTime? startDate;
 
   // Search news before the given date
-  // Valid format : Date format should be YYYY-MM-ddTHH:mm:ss.ss±hh:mm, which follows the offcial standard of RFC 3339 Date and Time on the Internet
-  String? endDate;
+  // Valid format : Date format should be YYYY-MM-ddTHH:mm:ss.ss±hh:mm, which follows the official standard of RFC 3339 Date and Time on the Internet
+  DateTime? endDate;
 
-  // Valid format : 1 for news, 2 for article and 3 for discussion content. All 3 types are choosen if there's no specification
+  // Valid format : 1 for news, 2 for article and 3 for discussion content. All 3 types are chosen if there's no specification
   int type;
 
   // a country code representing news came from a region.

@@ -15,7 +15,7 @@ FiltersCollection _$FiltersCollectionFromJson(Map<String, dynamic> json) =>
       languages: (json['languages'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
-          const ["en"],
+          const [Language.english],
       regions: (json['regions'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??

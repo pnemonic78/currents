@@ -12,6 +12,7 @@ NewsResponse _$NewsResponseFromJson(Map<String, dynamic> json) => NewsResponse(
               ?.map((e) => Article.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
+      page: json['page'] as int? ?? 1,
     );
 
 const _$StatusEnumMap = {

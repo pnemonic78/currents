@@ -11,10 +11,13 @@ class NewsResponse {
   final Status status;
   @JsonKey(name: "news")
   final List<Article> news;
+  @JsonKey(name: "page")
+  final int page;
 
   NewsResponse({
     this.status = Status.ok,
     this.news = const [],
+    this.page = 1,
   });
 
   static NewsResponse fromJson(Map<String, dynamic> json) =>

@@ -51,6 +51,10 @@ dependencies:
   retrofit: ^4.0.1
   dio: ^5.3.2
   get: ^4.6.5
+  flutter_localized_locales: ^2.0.4
+  intl: ^0.18.1
+  sealed_languages: ^0.5.0
+  sealed_countries: ^0.5.0
 
 dev_dependencies:
   flutter_test:

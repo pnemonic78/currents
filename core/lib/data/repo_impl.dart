@@ -82,7 +82,28 @@ class CurrentRepositoryImpl extends CurrentsRepository {
   }
 
   @override
-  Stream<NewsCollection> getSearch(SearchRequest request) async* {
+  Stream<NewsCollection> getSearch(
+    SearchRequest request, {
+    bool refresh = false,
+  }) async* {
+    final localNews = _local.getSearch(request).asBroadcastStream();
+    final localNewsSnapshot = await localNews.first;
+    yield localNewsSnapshot;
+
+    // if results are older than X minutes, then fetch from remote server.
+    final diff = DateTime.now().difference(localNewsSnapshot.timestamp);
+    if (refresh || (diff.inMinutes >= _oldAgeNewsMinutes)) {
+      try {
+        final remoteNews = await _remote.getSearch(request).first;
+        _local.setSearch(remoteNews);
+        yield remoteNews;
+      } on Exception catch (e) {
+        print("getSearch Exception $e");
+        // use local
+      }
+    }
+
+    yield* localNews;
     yield* _local.getSearch(request);
   }
 

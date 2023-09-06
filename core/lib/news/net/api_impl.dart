@@ -46,8 +46,8 @@ class CurrentsApiImpl extends CurrentsApi {
     return _client.getSearch(
       apiKey: _apiKey,
       language: request.language,
-      startDate: request.startDate,
-      endDate: request.endDate,
+      startDate: _formatDate(request.startDate),
+      endDate: _formatDate(request.endDate),
       type: request.type,
       country: request.country,
       category: request.category,
@@ -59,4 +59,6 @@ class CurrentsApiImpl extends CurrentsApi {
       limit: request.limit,
     );
   }
+
+  String? _formatDate(DateTime? date) => date?.toIso8601String();
 }
