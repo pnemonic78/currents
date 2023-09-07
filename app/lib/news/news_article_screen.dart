@@ -50,7 +50,8 @@ class _NewsArticleScreenState extends State<NewsArticleScreen> {
       body: NewsArticlePage(
         article: article,
         onSourcePressed: _controller.onArticleSourcePressed,
-        onCategoryPressed: _controller.onCategoryPressed,
+        onCategoryPressed: (category) =>
+            _controller.onCategoryPressed(article, category),
       ),
     );
   }

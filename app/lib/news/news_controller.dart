@@ -2,6 +2,7 @@ import 'package:currentsapi_app/my/my_route.dart';
 import 'package:currentsapi_auth/user/user_controller.dart';
 import 'package:currentsapi_favorites/favorites/favorites_ext.dart';
 import 'package:currentsapi_model/api/news.dart';
+import 'package:currentsapi_model/api/search_request.dart';
 import 'package:currentsapi_model/prefs/user_prefs.dart';
 import 'package:currentsapi_news/news/news_arguments.dart';
 import 'package:currentsapi_settings/settings/settings_arguments.dart';
@@ -75,11 +76,17 @@ class NewsController extends GetxController {
     launchUrl(url);
   }
 
-  void onCategoryPressed(String category) {
-    filterCategory(category);
+  void onCategoryPressed(Article article, String category) {
+    _filterCategory(article, category);
   }
 
-  void filterCategory(String category) async {
-    //TODO show search page with filter.
+  void _filterCategory(Article article, String category) async {
+    Get.toNamed(
+      MyAppRoute.SearchResults,
+      arguments: SearchRequest(
+        language: article.language,
+        category: category,
+      ),
+    );
   }
 }

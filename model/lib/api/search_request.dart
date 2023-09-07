@@ -55,7 +55,7 @@ class SearchRequest {
     this.startDate,
     this.endDate,
     this.type = SearchContentType.news,
-    this.country = Region.regionInternational,
+    this.country = Region.regionAll,
     this.category,
     this.domain,
     this.domainNot,
