@@ -2,7 +2,7 @@ import 'package:currentsapi_auth/user/user_controller.dart';
 import 'package:currentsapi_core/data/repo.dart';
 import 'package:currentsapi_core/net/net_ext.dart';
 import 'package:currentsapi_model/api/language.dart';
-import 'package:currentsapi_model/db/filters_db.dart';
+import 'package:currentsapi_model/db/config_doc.dart';
 import 'package:currentsapi_model/prefs/theme.dart';
 import 'package:currentsapi_model/prefs/user_prefs.dart';
 import 'package:currentsapi_settings/settings/settings_arguments.dart';
@@ -30,12 +30,12 @@ class SettingsController extends GetxController {
     installerStore: 'Unknown',
   ).obs;
 
-  final filters = FiltersCollection().obs;
+  final config = ConfigurationDocument().obs;
 
   @override
   void onInit() async {
     packageInfo.value = await PackageInfo.fromPlatform();
-    filters.value = await _repo.getFilters();
+    config.value = await _repo.getConfiguration();
     super.onInit();
   }
 

@@ -1,13 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'filters_db.dart';
+part of 'config_doc.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-FiltersCollection _$FiltersCollectionFromJson(Map<String, dynamic> json) =>
-    FiltersCollection(
+ConfigurationDocument _$ConfigurationDocumentFromJson(
+        Map<String, dynamic> json) =>
+    ConfigurationDocument(
       categories: (json['categories'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
@@ -15,15 +16,19 @@ FiltersCollection _$FiltersCollectionFromJson(Map<String, dynamic> json) =>
       languages: (json['languages'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
-          const [Language.english],
+          const [cal.Language.english],
       regions: (json['regions'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const [Region.regionInternational],
-    )..timestamp = DateTime.parse(json['timestamp'] as String);
+    )
+      ..apiKey = json['apiKey'] as String
+      ..timestamp = DateTime.parse(json['timestamp'] as String);
 
-Map<String, dynamic> _$FiltersCollectionToJson(FiltersCollection instance) =>
+Map<String, dynamic> _$ConfigurationDocumentToJson(
+        ConfigurationDocument instance) =>
     <String, dynamic>{
+      'apiKey': instance.apiKey,
       'categories': instance.categories,
       'languages': instance.languages,
       'regions': instance.regions,

@@ -1,4 +1,3 @@
-import 'package:currentsapi_core/auth/keys.dart';
 import 'package:currentsapi_core/news/net/rest_client.dart';
 import 'package:currentsapi_model/api/categories_response.dart';
 import 'package:currentsapi_model/api/languages.dart';
@@ -9,12 +8,11 @@ import 'package:currentsapi_model/api/search_request.dart';
 import 'api.dart';
 
 class CurrentsApiImpl extends CurrentsApi {
-  static const _apiKey = Keys.CURRENTS_API;
-
+  final String _apiKey;
   final RestClient _client;
 
   // @factoryMethod
-  CurrentsApiImpl(this._client);
+  CurrentsApiImpl(this._client, this._apiKey);
 
   @override
   Future<NewsResponse> latest(String languageCode) async {

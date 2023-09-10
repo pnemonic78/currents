@@ -1,12 +1,13 @@
+import 'package:currentsapi_model/api/language.dart' as cal;
 import 'package:currentsapi_model/api/region.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import '../api/language.dart';
-
-part 'filters_db.g.dart';
+part 'config_doc.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class FiltersCollection {
+class ConfigurationDocument {
+  @JsonKey(name: "apiKey")
+  String apiKey = "";
   @JsonKey(name: "categories")
   List<String> categories = [];
   @JsonKey(name: "languages")
@@ -16,9 +17,9 @@ class FiltersCollection {
   @JsonKey(name: "timestamp")
   DateTime timestamp = DateTime.now();
 
-  FiltersCollection({
+  ConfigurationDocument({
     this.categories = const [],
-    this.languages = const [Language.english],
+    this.languages = const [cal.Language.english],
     this.regions = const [Region.regionInternational],
   });
 
@@ -27,10 +28,10 @@ class FiltersCollection {
     return "{categories:$categories, languages:$languages, regions:$regions, timestamp:$timestamp}";
   }
 
-  static FiltersCollection fromJson(Map<String, dynamic> json) =>
-      _$FiltersCollectionFromJson(json);
+  static ConfigurationDocument fromJson(Map<String, dynamic> json) =>
+      _$ConfigurationDocumentFromJson(json);
 
-  Map<String, dynamic> toJson() => _$FiltersCollectionToJson(this);
+  Map<String, dynamic> toJson() => _$ConfigurationDocumentToJson(this);
 
-  static FiltersCollection empty() => FiltersCollection(categories: []);
+  static ConfigurationDocument empty() => ConfigurationDocument(categories: []);
 }

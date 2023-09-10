@@ -102,7 +102,7 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Widget _buildLanguageContent(BuildContext context) {
-    final languageCodes = _controller.filters.value.languages;
+    final languageCodes = _controller.config.value.languages;
     final List<cal.Language> languages = languageCodes
         .map((e) => (e, getLanguageName(context, e)))
         .where((p) => p.$2 != null)

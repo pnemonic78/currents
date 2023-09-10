@@ -1,5 +1,5 @@
 import 'package:currentsapi_model/api/search_request.dart';
-import 'package:currentsapi_model/db/filters_db.dart';
+import 'package:currentsapi_model/db/config_doc.dart';
 import 'package:currentsapi_model/db/news_db.dart';
 import 'package:currentsapi_model/prefs/user_prefs.dart';
 
@@ -12,7 +12,7 @@ class CurrentRepositoryImpl extends CurrentsRepository {
   CurrentRepositoryImpl(this._local, this._remote);
 
   static const _oldAgeNewsMinutes = 5;
-  static const _oldAgeFiltersDays = 7;
+  static const _oldAgeConfigurationDays = 7;
 
   @override
   Future<UserPreferences> getUserPreferences() {
@@ -57,28 +57,29 @@ class CurrentRepositoryImpl extends CurrentsRepository {
   }
 
   @override
-  Future<FiltersCollection> getFilters({bool refresh = false}) async {
-    final localFilters = await _local.getFilters(refresh: refresh);
+  Future<ConfigurationDocument> getConfiguration({bool refresh = false}) async {
+    final localConfiguration = await _local.getConfiguration(refresh: refresh);
 
     // if news is older than X minutes, then fetch from remote server.
-    final diff = DateTime.now().difference(localFilters.timestamp);
-    if (refresh || (diff.inDays >= _oldAgeFiltersDays)) {
+    final diff = DateTime.now().difference(localConfiguration.timestamp);
+    if (refresh || (diff.inDays >= _oldAgeConfigurationDays)) {
       try {
-        final remoteFilters = await _remote.getFilters();
-        _local.setFilters(remoteFilters);
-        return remoteFilters;
+        final remoteConfiguration = await _remote.getConfiguration()
+          ..apiKey = localConfiguration.apiKey;
+        _local.setConfiguration(remoteConfiguration);
+        return remoteConfiguration;
       } on Exception catch (e) {
-        print("getFilters Exception $e");
+        print("getConfiguration Exception $e");
         // use local
       }
     }
 
-    return localFilters;
+    return localConfiguration;
   }
 
   @override
-  Future<void> setFilters(FiltersCollection filters) async {
-    return _local.setFilters(filters);
+  Future<void> setConfiguration(ConfigurationDocument config) async {
+    return _local.setConfiguration(config);
   }
 
   @override

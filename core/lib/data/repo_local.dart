@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:currentsapi_model/api/search_request.dart';
-import 'package:currentsapi_model/db/filters_db.dart';
+import 'package:currentsapi_model/db/config_doc.dart';
 import 'package:currentsapi_model/db/news_db.dart';
 import 'package:currentsapi_model/prefs/user_prefs.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,14 +10,14 @@ import 'repo.dart';
 class CurrentsRepositoryLocal extends CurrentsRepository {
   final CollectionReference<UserPreferences> _usersRef;
   final CollectionReference<NewsCollection> _latestNewsRef;
-  final CollectionReference<FiltersCollection> _filtersRef;
+  final CollectionReference<ConfigurationDocument> _filtersRef;
   final CollectionReference<NewsCollection> _searchesRef;
 
   static const _tableUsers = "users";
   static const _tableLatestNews = "latest-news";
-  static const _tableFilters = "filters";
+  static const _tableConfiguration = "configuration";
   static const _tableSearches = "searches";
-  static const _docFilters = "available";
+  static const _docConfiguration = "config";
 
   CurrentsRepositoryLocal(FirebaseFirestore db)
       : _usersRef = db.collection(_tableUsers).withConverter<UserPreferences>(
@@ -32,10 +32,10 @@ class CurrentsRepositoryLocal extends CurrentsRepository {
                   toFirestore: (article, _) => article.toJson(),
                 ),
         _filtersRef =
-            db.collection(_tableFilters).withConverter<FiltersCollection>(
+            db.collection(_tableConfiguration).withConverter<ConfigurationDocument>(
                   fromFirestore: (snapshots, _) =>
-                      FiltersCollection.fromJson(snapshots.data()!),
-                  toFirestore: (filters, _) => filters.toJson(),
+                      ConfigurationDocument.fromJson(snapshots.data()!),
+                  toFirestore: (config, _) => config.toJson(),
                 ),
         _searchesRef =
             db.collection(_tableSearches).withConverter<NewsCollection>(
@@ -113,8 +113,8 @@ class CurrentsRepositoryLocal extends CurrentsRepository {
   }
 
   @override
-  Future<FiltersCollection> getFilters({bool refresh = false}) async {
-    final filtersDoc = _filtersRef.doc(_docFilters);
+  Future<ConfigurationDocument> getConfiguration({bool refresh = false}) async {
+    final filtersDoc = _filtersRef.doc(_docConfiguration);
     final filtersSnapshot = await filtersDoc.get();
     if (filtersSnapshot.exists) {
       final filtersData = filtersSnapshot.data();
@@ -123,16 +123,16 @@ class CurrentsRepositoryLocal extends CurrentsRepository {
       }
     }
 
-    FiltersCollection filters = FiltersCollection()
+    ConfigurationDocument config = ConfigurationDocument()
       ..timestamp = DateTime.now().subtract(const Duration(days: 999));
-    await filtersDoc.set(filters);
-    return filters;
+    await filtersDoc.set(config);
+    return config;
   }
 
   @override
-  Future<void> setFilters(FiltersCollection filters) async {
-    final filtersDoc = _filtersRef.doc(_docFilters);
-    await filtersDoc.set(filters);
+  Future<void> setConfiguration(ConfigurationDocument config) async {
+    final filtersDoc = _filtersRef.doc(_docConfiguration);
+    await filtersDoc.set(config);
   }
 
   @override

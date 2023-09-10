@@ -4,7 +4,7 @@ import 'package:currentsapi_model/api/news.dart';
 import 'package:currentsapi_model/api/region.dart';
 import 'package:currentsapi_model/api/search_request.dart';
 import 'package:currentsapi_model/api/status.dart';
-import 'package:currentsapi_model/db/filters_db.dart';
+import 'package:currentsapi_model/db/config_doc.dart';
 import 'package:currentsapi_model/db/news_db.dart';
 import 'package:currentsapi_model/prefs/user_prefs.dart';
 
@@ -43,7 +43,7 @@ class CurrentsRepositoryRemote extends CurrentsRepository {
   }
 
   @override
-  Future<FiltersCollection> getFilters({bool refresh = false}) async {
+  Future<ConfigurationDocument> getConfiguration({bool refresh = false}) async {
     final categoriesResponse = await _api.categories();
     final languagesResponse = await _api.languages();
     final regionsResponse = await _api.regions();
@@ -60,7 +60,7 @@ class CurrentsRepositoryRemote extends CurrentsRepository {
         ? regionsResponse.regions.map((e) => e.id).toList()
         : const [Region.regionInternational];
 
-    return FiltersCollection(
+    return ConfigurationDocument(
       categories: categories,
       languages: languages,
       regions: regions,
@@ -68,7 +68,7 @@ class CurrentsRepositoryRemote extends CurrentsRepository {
   }
 
   @override
-  Future<void> setFilters(FiltersCollection filters) {
+  Future<void> setConfiguration(ConfigurationDocument config) {
     throw UnimplementedError();
   }
 
