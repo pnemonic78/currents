@@ -1,6 +1,8 @@
 import 'package:currentsapi_app/my/my_route.dart';
 import 'package:currentsapi_auth/user/user_controller.dart';
+import 'package:currentsapi_core/data/repo.dart';
 import 'package:currentsapi_favorites/favorites/favorites_ext.dart';
+import 'package:currentsapi_model/api/category.dart' as cac;
 import 'package:currentsapi_model/api/news.dart';
 import 'package:currentsapi_model/api/search_request.dart';
 import 'package:currentsapi_model/prefs/user_prefs.dart';
@@ -11,8 +13,18 @@ import 'package:url_launcher/url_launcher.dart';
 
 class NewsController extends GetxController {
   final _userController = Get.find<UserController>();
+  final _repo = Get.find<CurrentsRepository>();
 
   Rx<UserPreferences> get user => _userController.user;
+
+  final RxList<String> categories = (const <String>[]).obs;
+
+  @override
+  void onInit() async {
+    final config = await _repo.getConfiguration();
+    categories.value = config.categories;
+    super.onInit();
+  }
 
   void onArticlePressed(Article article) {
     _showNews(article);
@@ -76,15 +88,20 @@ class NewsController extends GetxController {
     launchUrl(url);
   }
 
-  void onCategoryPressed(Article article, String category) {
-    _filterCategory(article, category);
+  void onArticleCategoryPressed(Article article, String category) {
+    _filterCategory(article.language, category);
   }
 
-  void _filterCategory(Article article, String category) async {
+  void onCategoryPressed(cac.Category category) {
+    final String language = user.value.language;
+    _filterCategory(language, category.id);
+  }
+
+  void _filterCategory(String language, String category) async {
     Get.toNamed(
       MyAppRoute.SearchResults,
       arguments: SearchRequest(
-        language: article.language,
+        language: language,
         category: category,
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:currentsapi_core/ui/locale_ext.dart';
+import 'package:currentsapi_model/api/category.dart' as cac;
 import 'package:currentsapi_model/api/language.dart' as cal;
 import 'package:currentsapi_model/api/region.dart';
 import 'package:currentsapi_model/api/search_request.dart';
@@ -66,16 +67,27 @@ class _SearchFormState extends State<SearchForm> {
     );
   }
 
-  Widget _buildCategories(BuildContext context, String? categorySelected) {
-    final List<String> categories = ["", ..._controller.categories]..sort();
+  Widget _buildCategories(BuildContext context, String? categoryCodeSelected) {
+    final List<cac.Category> categories = [
+          cac.Category(id: "", name: "(All)")
+        ] +
+        (_controller.categories
+            .map((e) => (e, _getCategoryName(context, e)))
+            .where((p) => p.$2 != null)
+            .map((p) => cac.Category(id: p.$1, name: p.$2!))
+            .toList()
+          ..sort((a, b) => a.name.compareTo(b.name)));
+    final categorySelected =
+        categories.firstWhereOrNull((e) => e.id == categoryCodeSelected);
 
-    return DropdownButtonFormField<String>(
+    return DropdownButtonFormField<cac.Category>(
       decoration: const InputDecoration(
         prefixIcon: Icon(Icons.category),
       ),
       hint: const Text("Select a Category"),
       items: categories
-          .map((e) => DropdownMenuItem<String>(value: e, child: Text(e)))
+          .map((e) =>
+              DropdownMenuItem<cac.Category>(value: e, child: Text(e.name)))
           .toList(),
       onChanged: _controller.onCategoryChanged,
       value: categorySelected,
@@ -109,12 +121,13 @@ class _SearchFormState extends State<SearchForm> {
 
   Widget _buildRegions(BuildContext context, String? regionCodeSelected) {
     final List<String> regionCodes = _controller.regions;
-    final List<Region> regions = regionCodes
-        .map((e) => (e, getRegionName(context, e)))
-        .where((p) => p.$2 != null)
-        .map((p) => Region(id: p.$1, name: p.$2!))
-        .toList()
-      ..sort((a, b) => a.name.compareTo(b.name));
+    final List<Region> regions = [Region(id: "", name: "(All)")] +
+        (regionCodes
+            .map((e) => (e, getRegionName(context, e)))
+            .where((p) => p.$2 != null)
+            .map((p) => Region(id: p.$1, name: p.$2!))
+            .toList()
+          ..sort((a, b) => a.name.compareTo(b.name)));
     final regionSelected =
         regions.firstWhereOrNull((e) => e.id == regionCodeSelected);
 
@@ -207,5 +220,11 @@ class _SearchFormState extends State<SearchForm> {
         _controller.onEndDateChanged(endDate);
       });
     }
+  }
+
+  String? _getCategoryName(BuildContext context, String categoryCode) {
+    return (categoryCode.toLowerCase() == categoryCode)
+        ? categoryCode.capitalize
+        : categoryCode;
   }
 }

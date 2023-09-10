@@ -51,7 +51,7 @@ class _NewsArticleScreenState extends State<NewsArticleScreen> {
         article: article,
         onSourcePressed: _controller.onArticleSourcePressed,
         onCategoryPressed: (category) =>
-            _controller.onCategoryPressed(article, category),
+            _controller.onArticleCategoryPressed(article, category),
       ),
     );
   }

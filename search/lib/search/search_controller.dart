@@ -1,6 +1,7 @@
 import 'package:currentsapi_auth/user/user_controller.dart';
 import 'package:currentsapi_core/data/repo.dart';
-import 'package:currentsapi_model/api/language.dart';
+import 'package:currentsapi_model/api/category.dart' as cac;
+import 'package:currentsapi_model/api/language.dart' as cal;
 import 'package:currentsapi_model/api/region.dart';
 import 'package:currentsapi_model/api/search_request.dart';
 import 'package:currentsapi_model/db/filters_db.dart';
@@ -17,11 +18,11 @@ class SearchFormController extends GetxController {
 
   Rx<FiltersCollection> filters = FiltersCollection().obs;
 
-  get categories => filters.value.categories;
+  List<String> get categories => filters.value.categories;
 
-  get languages => filters.value.languages;
+  List<String> get languages => filters.value.languages;
 
-  get regions => filters.value.regions;
+  List<String> get regions => filters.value.regions;
 
   Rx<SearchRequest> form = SearchRequest().obs;
 
@@ -33,12 +34,12 @@ class SearchFormController extends GetxController {
     super.onInit();
   }
 
-  void onCategoryChanged(String? value) {
-    form.value.category = value;
+  void onCategoryChanged(cac.Category? value) {
+    form.value.category = value?.id;
   }
 
-  void onLanguageChanged(Language? value) {
-    form.value.language = value?.id ?? Language.english;
+  void onLanguageChanged(cal.Language? value) {
+    form.value.language = value?.id ?? cal.Language.english;
   }
 
   void onRegionChanged(Region? value) {

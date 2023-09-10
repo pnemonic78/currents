@@ -1,4 +1,5 @@
 import 'package:currentsapi_app/news/news_controller.dart';
+import 'package:currentsapi_model/api/category.dart' as cac;
 import 'package:currentsapi_news/news/latest_news.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -34,12 +35,60 @@ class _LatestNewsScreenState extends State<LatestNewsScreen> {
           ),
         ],
       ),
-      body: Obx(
-        () => LatestNews(
-          language: _controller.user.value.language,
-          onArticlePressed: _controller.onArticlePressed,
-        ),
-      ),
+      body: _buildNews(context),
     );
+  }
+
+  Widget _buildNews(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(
+          height: 40,
+          child: Obx(() => _buildCategories(context, _controller.categories)),
+        ),
+        Obx(
+          () => Expanded(
+            child: LatestNews(
+              language: _controller.user.value.language,
+              onArticlePressed: _controller.onArticlePressed,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCategories(BuildContext context, List<String> categoryCodes) {
+    final List<cac.Category> categories = categoryCodes
+        .map((e) => (e, _getCategoryName(context, e)))
+        .where((p) => p.$2 != null)
+        .map((p) => cac.Category(id: p.$1, name: p.$2!))
+        .toList()
+      ..sort((a, b) => a.name.compareTo(b.name));
+
+    final List<Widget> categoriesChips = categories
+        .map(
+          (e) => Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 2.0),
+            child: ActionChip(
+              label: Text(e.name),
+              onPressed: () => _controller.onCategoryPressed(e),
+            ),
+          ),
+          // (e) => Text(e.name),
+        )
+        .toList();
+
+    return ListView(
+      shrinkWrap: true,
+      scrollDirection: Axis.horizontal,
+      children: categoriesChips,
+    );
+  }
+
+  String? _getCategoryName(BuildContext context, String categoryCode) {
+    return (categoryCode.toLowerCase() == categoryCode)
+        ? categoryCode.capitalize
+        : categoryCode;
   }
 }

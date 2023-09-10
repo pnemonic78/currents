@@ -88,7 +88,7 @@ class _NewsArticlePageState extends State<NewsArticlePage> {
                   height: imageHeight,
                   fit: BoxFit.fitWidth,
                 )
-              : icon,
+              : Container(),
           Padding(
             padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 8.0),
             child: Text(
