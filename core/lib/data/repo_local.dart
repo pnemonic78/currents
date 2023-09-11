@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:currentsapi_model/api/search_request.dart';
 import 'package:currentsapi_model/db/config_doc.dart';
 import 'package:currentsapi_model/db/news_db.dart';
+import 'package:currentsapi_model/net/result.dart';
 import 'package:currentsapi_model/prefs/user_prefs.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -19,6 +20,8 @@ class CurrentsRepositoryLocal extends CurrentsRepository {
   static const _tableSearches = "searches";
   static const _docConfiguration = "config";
 
+  static const _old = Duration(days: 999);
+
   CurrentsRepositoryLocal(FirebaseFirestore db)
       : _usersRef = db.collection(_tableUsers).withConverter<UserPreferences>(
               fromFirestore: (snapshots, _) =>
@@ -31,12 +34,13 @@ class CurrentsRepositoryLocal extends CurrentsRepository {
                       NewsCollection.fromJson(snapshots.data()!),
                   toFirestore: (article, _) => article.toJson(),
                 ),
-        _filtersRef =
-            db.collection(_tableConfiguration).withConverter<ConfigurationDocument>(
-                  fromFirestore: (snapshots, _) =>
-                      ConfigurationDocument.fromJson(snapshots.data()!),
-                  toFirestore: (config, _) => config.toJson(),
-                ),
+        _filtersRef = db
+            .collection(_tableConfiguration)
+            .withConverter<ConfigurationDocument>(
+              fromFirestore: (snapshots, _) =>
+                  ConfigurationDocument.fromJson(snapshots.data()!),
+              toFirestore: (config, _) => config.toJson(),
+            ),
         _searchesRef =
             db.collection(_tableSearches).withConverter<NewsCollection>(
                   fromFirestore: (snapshots, _) =>
@@ -84,26 +88,29 @@ class CurrentsRepositoryLocal extends CurrentsRepository {
   }
 
   @override
-  Stream<NewsCollection> getLatestNews(
+  Stream<TikalResult<NewsCollection>> getLatestNews(
     String languageCode, {
     bool refresh = false,
   }) async* {
+    yield TikalResultLoading();
+
     final newsDoc = _latestNewsRef.doc(languageCode);
     final newsSnapshot = await newsDoc.get();
-    NewsCollection result;
+    final NewsCollection result;
     if (newsSnapshot.exists) {
       final data = newsSnapshot.data();
       result = data ?? NewsCollection.empty();
     } else {
       result = NewsCollection.empty()
-        ..timestamp = DateTime.now().subtract(const Duration(days: 999));
+        ..timestamp = DateTime.now().subtract(_old);
     }
-    yield result;
+    yield TikalResultSuccess(result);
 
     yield* newsDoc
         .snapshots()
         .where((snapshot) => snapshot.exists)
-        .map((snapshot) => snapshot.data() ?? result);
+        .map((snapshot) => snapshot.data() ?? result)
+        .map((r) => TikalResultSuccess(r));
   }
 
   @override
@@ -124,7 +131,7 @@ class CurrentsRepositoryLocal extends CurrentsRepository {
     }
 
     ConfigurationDocument config = ConfigurationDocument()
-      ..timestamp = DateTime.now().subtract(const Duration(days: 999));
+      ..timestamp = DateTime.now().subtract(_old);
     await filtersDoc.set(config);
     return config;
   }
@@ -136,33 +143,36 @@ class CurrentsRepositoryLocal extends CurrentsRepository {
   }
 
   @override
-  Stream<NewsCollection> getSearch(
+  Stream<TikalResult<NewsCollection>> getSearch(
     SearchRequest request, {
     bool refresh = false,
   }) async* {
+    yield TikalResultLoading();
+
     final user = this.user;
     if (user == null) {
-      yield NewsCollection.empty();
+      yield TikalResultError(Exception("No user"));
       return;
     }
     final String userId = user.uid;
 
     final searchDoc = _searchesRef.doc(userId);
     final searchSnapshot = await searchDoc.get();
-    NewsCollection result;
+    final NewsCollection result;
     if (searchSnapshot.exists) {
       final data = searchSnapshot.data();
       result = data ?? NewsCollection.empty();
     } else {
       result = NewsCollection.empty()
-        ..timestamp = DateTime.now().subtract(const Duration(days: 999));
+        ..timestamp = DateTime.now().subtract(_old);
     }
-    yield result;
+    yield TikalResultSuccess(result);
 
     yield* searchDoc
         .snapshots()
         .where((snapshot) => snapshot.exists)
-        .map((snapshot) => snapshot.data() ?? result);
+        .map((snapshot) => snapshot.data() ?? result)
+        .map((r) => TikalResultSuccess(r));
   }
 
   @override

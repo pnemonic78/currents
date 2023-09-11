@@ -1,7 +1,9 @@
 import 'package:currentsapi_model/api/search_request.dart';
 import 'package:currentsapi_model/db/config_doc.dart';
 import 'package:currentsapi_model/db/news_db.dart';
+import 'package:currentsapi_model/net/result.dart';
 import 'package:currentsapi_model/prefs/user_prefs.dart';
+import 'package:rxdart/rxdart.dart';
 
 import 'repo.dart';
 
@@ -25,30 +27,66 @@ class CurrentRepositoryImpl extends CurrentsRepository {
   }
 
   @override
-  Stream<NewsCollection> getLatestNews(
+  Stream<TikalResult<NewsCollection>> getLatestNews(
     String languageCode, {
     bool refresh = false,
-  }) async* {
-    final localNews = _local
-        .getLatestNews(languageCode, refresh: refresh)
-        .asBroadcastStream();
-    final localNewsSnapshot = await localNews.first;
-    yield localNewsSnapshot;
+  }) {
+    final subject = BehaviorSubject<TikalResult<NewsCollection>>.seeded(
+        TikalResultLoading());
+
+    final localResults = _local.getLatestNews(languageCode, refresh: refresh);
+    bool isFirstSuccess = true;
+    localResults.forEach((e) async {
+      if (isFirstSuccess) {
+        if (e is TikalResultSuccess) {
+          await _maybeFetchLatestNews(
+            subject,
+            e as TikalResultSuccess<NewsCollection>,
+            languageCode: languageCode,
+            refresh: refresh,
+          );
+          isFirstSuccess = false;
+        } else {
+          subject.add(e);
+        }
+      } else {
+        subject.add(e);
+      }
+    });
+
+    return subject;
+  }
+
+  Future<void> _maybeFetchLatestNews(
+    BehaviorSubject<TikalResult<NewsCollection>> subject,
+    TikalResultSuccess<NewsCollection> localResult, {
+    required String languageCode,
+    bool refresh = false,
+  }) async {
+    NewsCollection? data = localResult.data;
+    if (data == null) return;
 
     // if news is older than X minutes, then fetch from remote server.
-    final diff = DateTime.now().difference(localNewsSnapshot.timestamp);
+    final diff = DateTime.now().difference(data.timestamp);
     if (refresh || (diff.inMinutes >= _oldAgeNewsMinutes)) {
+      subject.add(TikalResultLoading());
+
       try {
-        final remoteNews = await _remote.getLatestNews(languageCode).first;
-        _local.setLatestNews(remoteNews, languageCode);
-        yield remoteNews;
+        final remoteResults = _remote.getLatestNews(languageCode);
+        await remoteResults.forEach((e) async {
+          if (e is TikalResultSuccess) {
+            final remoteResult = e as TikalResultSuccess<NewsCollection>;
+            final NewsCollection? remoteData = remoteResult.data;
+            if (remoteData != null) {
+              _local.setLatestNews(remoteData, languageCode);
+            }
+          }
+        });
       } on Exception catch (e) {
-        print("getLatestNews Exception $e");
+        print("_maybeFetchLatestNews Exception $e");
         // use local
       }
     }
-
-    yield* localNews;
   }
 
   @override
@@ -83,29 +121,66 @@ class CurrentRepositoryImpl extends CurrentsRepository {
   }
 
   @override
-  Stream<NewsCollection> getSearch(
+  Stream<TikalResult<NewsCollection>> getSearch(
     SearchRequest request, {
     bool refresh = false,
-  }) async* {
-    final localNews = _local.getSearch(request).asBroadcastStream();
-    final localNewsSnapshot = await localNews.first;
-    yield localNewsSnapshot;
+  }) {
+    final subject = BehaviorSubject<TikalResult<NewsCollection>>.seeded(
+        TikalResultLoading());
+
+    final localResults = _local.getSearch(request);
+    bool isFirstSuccess = true;
+    localResults.forEach((e) async {
+      if (isFirstSuccess) {
+        if (e is TikalResultSuccess) {
+          await _maybeFetchSearch(
+            subject,
+            e as TikalResultSuccess<NewsCollection>,
+            request: request,
+            refresh: refresh,
+          );
+          isFirstSuccess = false;
+        } else {
+          subject.add(e);
+        }
+      } else {
+        subject.add(e);
+      }
+    });
+
+    return subject;
+  }
+
+  Future<void> _maybeFetchSearch(
+    BehaviorSubject<TikalResult<NewsCollection>> subject,
+    TikalResultSuccess<NewsCollection> localResult, {
+    required SearchRequest request,
+    bool refresh = false,
+  }) async {
+    NewsCollection? data = localResult.data;
+    if (data == null) return;
 
     // if results are older than X minutes, then fetch from remote server.
-    final diff = DateTime.now().difference(localNewsSnapshot.timestamp);
+    final diff = DateTime.now().difference(data.timestamp);
     if (refresh || (diff.inMinutes >= _oldAgeNewsMinutes)) {
+      subject.add(TikalResultLoading());
+
       try {
-        final remoteNews = await _remote.getSearch(request).first;
-        _local.setSearch(remoteNews);
-        yield remoteNews;
+        final remoteResults = _remote.getSearch(request);
+        await remoteResults.forEach((e) async {
+          if (e is TikalResultSuccess) {
+            final remoteResult = e as TikalResultSuccess<NewsCollection>;
+            final NewsCollection? remoteData = remoteResult.data;
+            if (remoteData != null) {
+              _local.setSearch(remoteData);
+            }
+          }
+        });
       } on Exception catch (e) {
-        print("getSearch Exception $e");
+        print("_maybeFetchSearch Exception $e");
         // use local
       }
     }
-
-    yield* localNews;
-    yield* _local.getSearch(request);
   }
 
   @override

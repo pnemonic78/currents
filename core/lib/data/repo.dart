@@ -1,6 +1,7 @@
 import 'package:currentsapi_model/api/search_request.dart';
 import 'package:currentsapi_model/db/config_doc.dart';
 import 'package:currentsapi_model/db/news_db.dart';
+import 'package:currentsapi_model/net/result.dart';
 import 'package:currentsapi_model/prefs/user_prefs.dart';
 
 /// Repository for Currents API service.
@@ -10,12 +11,12 @@ abstract class CurrentsRepository {
   /// @param userPreferences The user preferences. `null` value deletes the profile.
   Future<void> setUserPreferences(UserPreferences? userPreferences);
 
-  Stream<NewsCollection> getLatestNews(
+  Stream<TikalResult<NewsCollection>> getLatestNews(
     String languageCode, {
     bool refresh = false,
   });
 
-  Stream<NewsCollection> getLatestNewsForUser(
+  Stream<TikalResult<NewsCollection>> getLatestNewsForUser(
     UserPreferences userPreferences, {
     bool refresh = false,
   }) {
@@ -33,7 +34,7 @@ abstract class CurrentsRepository {
 
   Future<void> setConfiguration(ConfigurationDocument config);
 
-  Stream<NewsCollection> getSearch(
+  Stream<TikalResult<NewsCollection>> getSearch(
     SearchRequest request, {
     bool refresh = false,
   });

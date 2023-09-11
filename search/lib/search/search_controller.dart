@@ -6,6 +6,7 @@ import 'package:currentsapi_model/api/region.dart';
 import 'package:currentsapi_model/api/search_request.dart';
 import 'package:currentsapi_model/db/config_doc.dart';
 import 'package:currentsapi_model/db/news_db.dart';
+import 'package:currentsapi_model/net/result.dart';
 import 'package:currentsapi_model/prefs/user_prefs.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -68,10 +69,10 @@ class SearchFormController extends GetxController {
     onSearchPressed?.call(request);
   }
 
-  Stream<NewsCollection> getSearchResults({
+  Stream<TikalResult<NewsCollection>> getSearchResults({
     required SearchRequest request,
     bool refresh = false,
-  }) async* {
-    yield* _repo.getSearch(request, refresh: refresh);
+  }) {
+    return _repo.getSearch(request, refresh: refresh);
   }
 }

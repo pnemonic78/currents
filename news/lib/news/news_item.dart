@@ -30,8 +30,7 @@ class NewsItem extends StatelessWidget {
     final imageExtent = imageHeight * 0.75;
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
-    final Color textBG50 = theme.isDarkMode ? Colors.black38 : Colors.white38;
-    final Color textBG = theme.isDarkMode ? Colors.black54 : Colors.white54;
+    final Color textBG = theme.isDarkMode ? Colors.black38 : Colors.white38;
 
     final icon = Icon(
       Icons.image,
@@ -46,19 +45,23 @@ class NewsItem extends StatelessWidget {
         child: Stack(
           alignment: AlignmentDirectional.bottomCenter,
           children: [
-            ParallaxImage(
-              extent: imageExtent,
-              child: article.isValidImage
-                  ? CachedNetworkImage(
+            article.isValidImage
+                ? ParallaxImage(
+                    extent: imageExtent,
+                    child: CachedNetworkImage(
                       key: Key(article.id),
                       imageUrl: article.image!,
                       placeholder: (context, url) => icon,
                       width: imageWidth,
                       height: imageHeight,
                       fit: BoxFit.cover,
-                    )
-                  : icon,
-            ),
+                    ),
+                  )
+                : Container(
+                    color: textBG,
+                    width: imageWidth,
+                    height: imageExtent,
+                  ),
             Container(
               width: imageWidth,
               height: imageExtent,
@@ -66,7 +69,7 @@ class NewsItem extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [Colors.transparent, textBG50, textBG],
+                  colors: [Colors.transparent, textBG],
                 ),
                 borderRadius: const BorderRadius.only(
                   bottomLeft: _cardRadius,
@@ -83,6 +86,9 @@ class NewsItem extends StatelessWidget {
                     style: textTheme.titleLarge!.copyWith(
                       overflow: TextOverflow.ellipsis,
                       fontWeight: FontWeight.w500,
+                      shadows: [
+                        Shadow(color: textBG, blurRadius: 6.0),
+                      ],
                     ),
                     maxLines: 4,
                   ),

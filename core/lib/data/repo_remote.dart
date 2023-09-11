@@ -1,11 +1,11 @@
 import 'package:currentsapi_core/news/net/api.dart';
 import 'package:currentsapi_model/api/language.dart';
-import 'package:currentsapi_model/api/news.dart';
 import 'package:currentsapi_model/api/region.dart';
 import 'package:currentsapi_model/api/search_request.dart';
 import 'package:currentsapi_model/api/status.dart';
 import 'package:currentsapi_model/db/config_doc.dart';
 import 'package:currentsapi_model/db/news_db.dart';
+import 'package:currentsapi_model/net/result.dart';
 import 'package:currentsapi_model/prefs/user_prefs.dart';
 
 import 'repo.dart';
@@ -27,14 +27,17 @@ class CurrentsRepositoryRemote extends CurrentsRepository {
   }
 
   @override
-  Stream<NewsCollection> getLatestNews(
+  Stream<TikalResult<NewsCollection>> getLatestNews(
     String languageCode, {
     bool refresh = true,
   }) async* {
+    yield TikalResultLoading();
     final response = await _api.latest(languageCode);
-    final List<Article> news =
-        (response.status == Status.ok) ? response.news : const [];
-    yield NewsCollection(news: news);
+    if (response.status == Status.ok) {
+      yield TikalResultSuccess(NewsCollection(news: response.news));
+    } else {
+      yield TikalResultError.withMessage<NewsCollection>(response.status.name);
+    }
   }
 
   @override
@@ -73,14 +76,17 @@ class CurrentsRepositoryRemote extends CurrentsRepository {
   }
 
   @override
-  Stream<NewsCollection> getSearch(
+  Stream<TikalResult<NewsCollection>> getSearch(
     SearchRequest request, {
     bool refresh = true,
   }) async* {
+    yield TikalResultLoading();
     final response = await _api.search(request);
-    final List<Article> news =
-        (response.status == Status.ok) ? response.news : const [];
-    yield NewsCollection(news: news);
+    if (response.status == Status.ok) {
+      yield TikalResultSuccess(NewsCollection(news: response.news));
+    } else {
+      yield TikalResultError.withMessage<NewsCollection>(response.status.name);
+    }
   }
 
   @override
