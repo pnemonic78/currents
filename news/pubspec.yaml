@@ -45,7 +45,7 @@ dependencies:
   timeago: ^3.5.0
   cached_network_image: ^3.2.3
   url_launcher: ^6.1.14
-  get: ^4.6.5
+  get: ^4.6.6
   intl: ^0.18.1
 
 dev_dependencies:
