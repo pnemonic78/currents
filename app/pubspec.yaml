@@ -54,17 +54,8 @@ dependencies:
 
   flutter_native_splash: ^2.3.1
 
-  # Firebase
-  firebase_core: ^2.15.1
-  firebase_auth: ^4.9.0
-  firebase_ui_auth: ^1.7.0
-  firebase_ui_oauth_google: ^1.2.10
-
-  timeago: ^3.5.0
-  cached_network_image: ^3.2.3
   get: ^4.6.6
   url_launcher: ^6.1.14
-  flutter_localized_locales: ^2.0.4
 
 dev_dependencies:
   flutter_test:

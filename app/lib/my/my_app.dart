@@ -5,10 +5,10 @@ import 'package:currentsapi_app/search/search_results_screen.dart';
 import 'package:currentsapi_app/search/search_screen.dart';
 import 'package:currentsapi_app/settings/settings_screen.dart';
 import 'package:currentsapi_core/auth/firebase.dart';
+import 'package:currentsapi_core/ui/app_i18n.dart';
+import 'package:currentsapi_core/ui/app_themes.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 import 'package:get/get.dart';
 
 import 'my_home_page.dart';
@@ -22,26 +22,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Currents API',
-      theme: ThemeData.light(useMaterial3: true).copyWith(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.orange,
-          brightness: Brightness.light,
-          onPrimary: Colors.white,
-        ),
-      ),
-      darkTheme: ThemeData.dark(useMaterial3: true).copyWith(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.deepOrangeAccent,
-          brightness: Brightness.dark,
-          onPrimary: Colors.black,
-        ),
-      ),
-      localizationsDelegates: const [
-        LocaleNamesLocalizationsDelegate(),
-        DefaultMaterialLocalizations.delegate,
-        DefaultWidgetsLocalizations.delegate,
-        DefaultCupertinoLocalizations.delegate,
-      ],
+      theme: AppTheme.themeLight,
+      darkTheme: AppTheme.themeDark,
+      localizationsDelegates: AppLocalizations.delegates,
       initialRoute: MyAppRoute.Home,
       routes: {
         MyAppRoute.Favorites: (context) => const FavoritesScreen(),
