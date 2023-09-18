@@ -1,5 +1,5 @@
-import 'package:currentsapi_app/favorites/favorites_controller.dart';
 import 'package:currentsapi_favorites/favorites/favorites_page.dart';
+import 'package:currentsapi_home/favorites/favorites_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

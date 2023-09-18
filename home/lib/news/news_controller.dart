@@ -1,7 +1,7 @@
-import 'package:currentsapi_app/my/my_route.dart';
 import 'package:currentsapi_auth/user/user_controller.dart';
 import 'package:currentsapi_core/data/repo.dart';
 import 'package:currentsapi_favorites/favorites/favorites_ext.dart';
+import 'package:currentsapi_home/my/my_route.dart';
 import 'package:currentsapi_model/api/category.dart' as cac;
 import 'package:currentsapi_model/api/news.dart';
 import 'package:currentsapi_model/api/search_request.dart';

@@ -180,6 +180,13 @@ packages:
       relative: true
     source: path
     version: "1.0.0+1"
+  currentsapi_home:
+    dependency: transitive
+    description:
+      path: home
+      relative: true
+    source: path
+    version: "1.0.0+1"
   currentsapi_model:
     dependency: transitive
     description:

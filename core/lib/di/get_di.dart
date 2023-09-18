@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:currentsapi_auth/user/user_controller.dart';
+import 'package:currentsapi_core/auth/firebase.dart';
 import 'package:currentsapi_core/data/repo.dart';
 import 'package:currentsapi_core/data/repo_impl.dart';
 import 'package:currentsapi_core/data/repo_local.dart';
@@ -13,6 +14,8 @@ import 'package:get/get.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 Future<void> injectDependencies() async {
+  await FirebaseHelper.init();
+
   final db = _provideDatabase();
   final local = _provideRepositoryLocal(db);
 
