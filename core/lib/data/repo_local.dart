@@ -94,6 +94,12 @@ class CurrentsRepositoryLocal extends CurrentsRepository {
   }) async* {
     yield TikalResultLoading();
 
+    final user = this.user;
+    if (user == null) {
+      yield TikalResultError(Exception("No user"));
+      return;
+    }
+
     final newsDoc = _latestNewsRef.doc(languageCode);
     final newsSnapshot = await newsDoc.get();
     final NewsCollection result;
@@ -115,12 +121,17 @@ class CurrentsRepositoryLocal extends CurrentsRepository {
 
   @override
   Future<void> setLatestNews(NewsCollection news, String languageCode) async {
+    final user = this.user;
+    if (user == null) return;
     final newsDoc = _latestNewsRef.doc(languageCode);
     newsDoc.set(news);
   }
 
   @override
   Future<ConfigurationDocument> getConfiguration({bool refresh = false}) async {
+    final user = this.user;
+    if (user == null) return ConfigurationDocument();
+
     final filtersDoc = _filtersRef.doc(_docConfiguration);
     final filtersSnapshot = await filtersDoc.get();
     if (filtersSnapshot.exists) {
@@ -138,6 +149,8 @@ class CurrentsRepositoryLocal extends CurrentsRepository {
 
   @override
   Future<void> setConfiguration(ConfigurationDocument config) async {
+    final user = this.user;
+    if (user == null) return;
     final filtersDoc = _filtersRef.doc(_docConfiguration);
     await filtersDoc.set(config);
   }
