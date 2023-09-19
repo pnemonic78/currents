@@ -42,61 +42,61 @@ class NewsItem extends StatelessWidget {
       clipBehavior: Clip.antiAliasWithSaveLayer,
       child: InkWell(
         onTap: () => onPressed?.call(article),
-        child: Stack(
-          alignment: AlignmentDirectional.bottomCenter,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            article.isValidImage
-                ? ParallaxImage(
-                    extent: imageExtent,
-                    child: CachedNetworkImage(
-                      key: Key(article.id),
-                      imageUrl: article.image!,
-                      placeholder: (context, url) => icon,
-                      width: imageWidth,
-                      height: imageHeight,
-                      fit: BoxFit.cover,
+            Stack(
+              children: [
+                article.isValidImage
+                    ? ParallaxImage(
+                        extent: imageExtent,
+                        child: CachedNetworkImage(
+                          key: Key(article.id),
+                          imageUrl: article.image!,
+                          placeholder: (context, url) => icon,
+                          width: imageWidth,
+                          height: imageHeight,
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                    : Container(
+                        color: textBG,
+                        width: imageWidth,
+                        height: imageExtent,
+                      ),
+                Container(
+                  alignment: AlignmentDirectional.bottomEnd,
+                  width: imageWidth,
+                  height: imageExtent,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [Colors.transparent, textBG],
                     ),
-                  )
-                : Container(
-                    color: textBG,
-                    width: imageWidth,
-                    height: imageExtent,
-                  ),
-            Container(
-              width: imageWidth,
-              height: imageExtent,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Colors.transparent, textBG],
-                ),
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: _cardRadius,
-                  bottomRight: _cardRadius,
-                ),
-              ),
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    article.title,
-                    style: textTheme.titleLarge!.copyWith(
-                      overflow: TextOverflow.ellipsis,
-                      fontWeight: FontWeight.w500,
-                      shadows: [
-                        Shadow(color: textBG, blurRadius: 6.0),
-                      ],
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: _cardRadius,
+                      bottomRight: _cardRadius,
                     ),
-                    maxLines: 4,
                   ),
-                  Text(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Text(
                     timeago.format(article.published, clock: DateTime.now()),
-                    style: textTheme.bodySmall,
+                    style: textTheme.bodyMedium,
                   ),
-                ],
+                ),
+              ],
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 4.0),
+              child: Text(
+                article.title,
+                style: textTheme.titleLarge!.copyWith(
+                  overflow: TextOverflow.ellipsis,
+                  fontWeight: FontWeight.w500,
+                ),
+                maxLines: 4,
               ),
             ),
           ],
