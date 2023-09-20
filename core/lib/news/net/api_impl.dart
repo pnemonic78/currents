@@ -1,3 +1,4 @@
+import 'package:currentsapi_core/data/repo.dart';
 import 'package:currentsapi_core/news/net/rest_client.dart';
 import 'package:currentsapi_model/api/categories_response.dart';
 import 'package:currentsapi_model/api/languages.dart';
@@ -8,41 +9,47 @@ import 'package:currentsapi_model/api/search_request.dart';
 import 'api.dart';
 
 class CurrentsApiImpl extends CurrentsApi {
-  final String _apiKey;
+  final CurrentsRepository _repo;
   final RestClient _client;
 
-  // @factoryMethod
-  CurrentsApiImpl(this._client, this._apiKey);
+  CurrentsApiImpl(this._client, this._repo);
+
+  Future<String> get _apiKey async => (await _repo.getConfiguration()).apiKey;
 
   @override
   Future<NewsResponse> latest(String languageCode) async {
+    final apiKey = await _apiKey;
     return _client.getLatest(
-      apiKey: _apiKey,
+      apiKey: apiKey,
       language: languageCode,
     );
   }
 
   @override
   Future<CategoriesResponse> categories() async {
-    return _client.getAvailableCategories(apiKey: _apiKey);
+    final apiKey = await _apiKey;
+    return _client.getAvailableCategories(apiKey: apiKey);
   }
 
   @override
   Future<Languages> languages() async {
-    final response = await _client.getAvailableLanguages(apiKey: _apiKey);
+    final apiKey = await _apiKey;
+    final response = await _client.getAvailableLanguages(apiKey: apiKey);
     return Languages.fromResponse(response);
   }
 
   @override
   Future<Regions> regions() async {
-    final response = await _client.getAvailableRegions(apiKey: _apiKey);
+    final apiKey = await _apiKey;
+    final response = await _client.getAvailableRegions(apiKey: apiKey);
     return Regions.fromResponse(response);
   }
 
   @override
-  Future<NewsResponse> search(SearchRequest request) {
+  Future<NewsResponse> search(SearchRequest request) async {
+    final apiKey = await _apiKey;
     return _client.getSearch(
-      apiKey: _apiKey,
+      apiKey: apiKey,
       language: request.language,
       startDate: _formatDate(request.startDate),
       endDate: _formatDate(request.endDate),

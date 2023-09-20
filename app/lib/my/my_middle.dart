@@ -15,7 +15,7 @@ class MyMiddleware extends GetMiddleware {
     // the splash screen is displayed.
     FlutterNativeSplash.remove();
 
-    _applyPreferences();
+    //FIXME _applyPreferences();
 
     return super.onPageCalled(page);
   }

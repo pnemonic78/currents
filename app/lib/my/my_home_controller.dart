@@ -33,8 +33,4 @@ class MyHomeController extends GetxController {
     isSignedIn ? _gotoNews() : _gotoSignIn();
     _gotoBusy = false;
   }
-
-  void onBuild() {
-    _onSignedInChanged(isSignedIn);
-  }
 }

@@ -19,11 +19,9 @@ Future<void> injectDependencies() async {
   final db = _provideDatabase();
   final local = _provideRepositoryLocal(db);
 
-  final config = await local.getConfiguration();
-
   final dio = _provideHttpClient();
   final client = _provideRest(dio);
-  final api = _provideApi(client, config.apiKey);
+  final api = _provideApi(client, local);
   final remote = _provideRepositoryRemote(api);
 
   final repo = _provideRepository(local, remote);
@@ -57,8 +55,8 @@ RestClient _provideRest(Dio dio) {
   return RestClient(dio);
 }
 
-CurrentsApi _provideApi(RestClient client, String apiKey) {
-  return CurrentsApiImpl(client, apiKey);
+CurrentsApi _provideApi(RestClient client, CurrentsRepository repo) {
+  return CurrentsApiImpl(client, repo);
 }
 
 CurrentsRepository _provideRepositoryRemote(CurrentsApi api) {
