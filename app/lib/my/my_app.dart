@@ -1,13 +1,13 @@
+import 'package:currentsapi_app/auth/profile_screen.dart';
+import 'package:currentsapi_app/auth/signin_screen.dart';
+import 'package:currentsapi_app/favorites/favorites_screen.dart';
+import 'package:currentsapi_app/news/latest_news_screen.dart';
+import 'package:currentsapi_app/news/news_article_screen.dart';
+import 'package:currentsapi_app/search/search_results_screen.dart';
+import 'package:currentsapi_app/search/search_screen.dart';
+import 'package:currentsapi_app/settings/settings_screen.dart';
 import 'package:currentsapi_core/ui/app_i18n.dart';
 import 'package:currentsapi_core/ui/app_themes.dart';
-import 'package:currentsapi_home/auth/profile_screen.dart';
-import 'package:currentsapi_home/auth/signin_screen.dart';
-import 'package:currentsapi_home/favorites/favorites_screen.dart';
-import 'package:currentsapi_home/news/latest_news_screen.dart';
-import 'package:currentsapi_home/news/news_article_screen.dart';
-import 'package:currentsapi_home/search/search_results_screen.dart';
-import 'package:currentsapi_home/search/search_screen.dart';
-import 'package:currentsapi_home/settings/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

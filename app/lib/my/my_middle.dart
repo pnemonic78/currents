@@ -10,16 +10,12 @@ class MyMiddleware extends GetMiddleware {
   final _userController = Get.find<UserController>();
 
   @override
-  GetPageBuilder? onPageBuildStart(GetPageBuilder? page) {
-    _applyPreferences();
-    return super.onPageBuildStart(page);
-  }
-
-  @override
   GetPage? onPageCalled(GetPage? page) {
     // This is where you can initialize the resources needed by your app while
     // the splash screen is displayed.
     FlutterNativeSplash.remove();
+
+    _applyPreferences();
 
     return super.onPageCalled(page);
   }

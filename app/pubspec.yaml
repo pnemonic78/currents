@@ -43,8 +43,6 @@ dependencies:
     path: ../domain
   currentsapi_favorites:
     path: ../favorites
-  currentsapi_home:
-    path: ../home
   currentsapi_model:
     path: ../model
   currentsapi_news:

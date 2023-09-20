@@ -1,5 +1,3 @@
-import 'package:currentsapi_model/prefs/user_prefs.dart';
-
 class MyAppRoute {
   static const Favorites = '/favorites';
   static const Home = '/';

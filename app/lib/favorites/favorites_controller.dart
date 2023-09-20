@@ -1,25 +1,15 @@
+import 'package:currentsapi_app/my/my_route.dart';
 import 'package:currentsapi_auth/user/user_controller.dart';
-import 'package:currentsapi_home/my/my_route.dart';
+import 'package:currentsapi_favorites/favorites/favorites_ext.dart';
 import 'package:currentsapi_model/api/news.dart';
-import 'package:currentsapi_model/api/search_request.dart';
 import 'package:currentsapi_model/prefs/user_prefs.dart';
 import 'package:currentsapi_news/news/news_arguments.dart';
 import 'package:get/get.dart';
 
-class SearchScreenController extends GetxController {
+class FavoritesController extends GetxController {
   final _userController = Get.find<UserController>();
 
   Rx<UserPreferences> get user => _userController.user;
-
-  SearchRequest request = SearchRequest();
-
-  void onSearchPressed(SearchRequest request) {
-    _gotoSearchResults(request);
-  }
-
-  void _gotoSearchResults(SearchRequest request) {
-    Get.toNamed(MyAppRoute.SearchResults, arguments: request);
-  }
 
   void onArticlePressed(Article article) {
     _showNews(article);
@@ -30,5 +20,15 @@ class SearchScreenController extends GetxController {
       MyAppRoute.NewsArticle,
       arguments: NewsArguments(article),
     );
+  }
+
+  void onFavoritePressed(Article article) {
+    _toggleFavorite(article);
+  }
+
+  void _toggleFavorite(Article article) async {
+    final UserPreferences user = this.user.value.copy();
+    user.toggleFavorite(article);
+    _userController.setUserPreferences(user);
   }
 }

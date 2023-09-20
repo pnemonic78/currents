@@ -38,6 +38,7 @@ dependencies:
   # JSON
   json_annotation: ^4.8.1
 
+  get: ^4.6.6
   intl: ^0.18.0
 
 dev_dependencies:

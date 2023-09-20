@@ -1,4 +1,4 @@
-import 'package:currentsapi_home/news/news_controller.dart';
+import 'package:currentsapi_app/news/news_controller.dart';
 import 'package:currentsapi_model/api/category.dart' as cac;
 import 'package:currentsapi_news/news/latest_news.dart';
 import 'package:flutter/material.dart';
