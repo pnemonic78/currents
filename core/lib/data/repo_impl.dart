@@ -84,6 +84,7 @@ class CurrentRepositoryImpl extends CurrentsRepository {
         });
       } on Exception catch (e) {
         print("_maybeFetchLatestNews Exception $e");
+        subject.add(TikalResultError(e));
         // use local
       }
     }
